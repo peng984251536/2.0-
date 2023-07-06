@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7027308285267234572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a400d2242e4811af28aa216e35199a, type: 3}
+  m_Name: GrayRayBloom
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  Event: 550
+  filterSettings:
+    renderQueueType: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    renderingLayerMask: 1
+  material: {fileID: 2100000, guid: d4920fb2dddcfb54cbc7f10738265381, type: 2}
+  threshold: 0.58
+  intensity: 24
+  width: 1.311
+  scatter: 0.67
+  godRay_X: 0.55
+  godRay_Y: 0.74
+  rayBlur: 2.05
+  overrideDepthState: 0
+  isRender: 1
+  depthCompareFunction: 4
+  enableWrite: 1
+--- !u!114 &-1068622945196476006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd466a1adf58418587449dbff86f440e, type: 3}
+  m_Name: NewTestPassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  Event: 300
+  filterSettings:
+    renderQueueType: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    renderingLayerMask: 31
+  material: {fileID: 2100000, guid: c74f010ff142baf47b8d48825d16fded, type: 2}
+  passes: 0000000001000000
+  overrideDepthState: 0
+  depthCompareFunction: 4
+  enableWrite: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
+  m_Name: BloomTest
+  m_EditorClassIdentifier: 
+  m_RendererFeatures:
+  - {fileID: 6720816077331190949}
+  - {fileID: 3140425615498235369}
+  - {fileID: -1068622945196476006}
+  - {fileID: -7027308285267234572}
+  m_RendererFeatureMap: a5540f2a9d22455de94d4f677508952b9a79bbd8177d2bf1f4b07cc958fc799e
+  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
+  shaders:
+    blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
+    copyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+    screenSpaceShadowPS: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
+    samplingPS: {fileID: 4800000, guid: 04c410c9937594faa893a11dceb85f7e, type: 3}
+    tileDepthInfoPS: {fileID: 0}
+    tileDeferredPS: {fileID: 0}
+    stencilDeferredPS: {fileID: 4800000, guid: e9155b26e1bc55942a41e518703fe304, type: 3}
+    fallbackErrorPS: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
+    materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
+  m_OpaqueLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_TransparentLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_DefaultStencilState:
+    overrideStencilState: 0
+    stencilReference: 0
+    stencilCompareFunction: 8
+    passOperation: 2
+    failOperation: 0
+    zFailOperation: 0
+  m_ShadowTransparentReceive: 1
+  m_RenderingMode: 0
+  m_AccurateGbufferNormals: 0
+--- !u!114 &3140425615498235369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769557285857447eb458866a752b9d24, type: 3}
+  m_Name: NewOpauqeTextureFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  Event: 300
+  material: {fileID: 2100000, guid: a536bf16823986140b64c06e6d611218, type: 2}
+--- !u!114 &6720816077331190949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b8c2ead59c45f99a3df0ca8ddf1739, type: 3}
+  m_Name: NewMaskBloomFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  Event: 550
+  filterSettings:
+    renderQueueType: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    renderingLayerMask: 1
+  material: {fileID: 2100000, guid: 11a0bf90f9880d14eac8463eb4f8cb94, type: 2}
+  threshold: 1.1
+  intensity: 10
+  width: 1.1
+  scatter: 0.81
+  overrideDepthState: 0
+  isRender: 1
+  depthCompareFunction: 8
+  enableWrite: 1

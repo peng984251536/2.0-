@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_GeoGrassShader
+  m_Shader: {fileID: 4800000, guid: ae7273363e8301d41ab08ed5091a5dd2, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _GrassTex:
+        m_Texture: {fileID: 2800000, guid: 2e818a5879e4ec240a099064e89a540f, type: 3}
+        m_Scale: {x: 1, y: 1.35}
+        m_Offset: {x: 0, y: 0}
+    - _JBLMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 100a50e8b1d0bc04b95bc2f03cb760db, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StylizedMap:
+        m_Texture: {fileID: 2800000, guid: e99c4782d06cb12428e04db1b7e9e329, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StylizedRamp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BladeCurve: 2
+    - _BladeForward: 0.5
+    - _GrassHight: 1.1
+    - _GrassHightRandom: 0.7
+    - _GrassMove: 0
+    - _GrassRotationRandom: 0.416
+    - _GrassRotationRandom2: 1
+    - _GrassWidth: 0.05
+    - _JBLScale: 1
+    - _MyEdgeTess: 4
+    - _MyInsideTess: 4
+    - _Radius: 2.5
+    - _SpecularHeight: -0.48
+    - _SpecularPower: 40
+    - _Strength: 1.5
+    - _StylizedScale: 1
+    - _WindNoiseStrength: 10
+    m_Colors:
+    - _BaseColor: {r: 1, g: 0, b: 0, a: 1}
+    - _GrassColor: {r: 0, g: 0.7490196, b: 0, a: 1}
+    - _GroundColor: {r: 1, g: 0.64705884, b: 0, a: 1}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
+    - _WindDirAndStrength: {r: 5, g: 5, b: 0, a: 10}
+  m_BuildTextureStacks: []

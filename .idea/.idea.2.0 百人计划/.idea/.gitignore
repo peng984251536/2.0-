@@ -1,0 +1,25 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/.idea.2.0 百人计划.iml
+/modules.xml
+/projectSettingsUpdater.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Builds
+*.apk
+//*.unitypackage
+/Library*
+/Assets/ProCore*
+/Temp*
+/Logs*
+/obj*
+/Packages*
+/ProjectSettings*
+/UserSettings*
