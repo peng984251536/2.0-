@@ -73,8 +73,8 @@ public class VolumeLightFrature : ScriptableRendererFeature
         FilterSettings filter = settings.filterSettings;
 
 
-        if (settings.Event < RenderPassEvent.BeforeRenderingPrepasses)
-            settings.Event = RenderPassEvent.BeforeRenderingPrepasses;
+        if (settings.Event < RenderPassEvent.BeforeRenderingPrePasses)
+            settings.Event = RenderPassEvent.BeforeRenderingPrePasses;
 
         renderObjectsPass = new VolumeLightPass(settings.passTag, settings.Event, filter.PassNames,
             filter.RenderQueueType, filter.LayerMask, settings.cameraSettings);

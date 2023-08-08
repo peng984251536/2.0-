@@ -12,7 +12,7 @@ public class CustomScriptableRenderer : ScriptableRenderer
     public CustomScriptableRenderer(CustomScriptableRendererData data) : base(data)
     {
         m_DepthTexture.Init("_MyCameraDepthTexture");
-        m_DepthPrepass = new DepthOnlyPass(RenderPassEvent.BeforeRenderingPrepasses, RenderQueueRange.opaque, data.opaqueLayerMask);
+        m_DepthPrepass = new DepthOnlyPass(RenderPassEvent.BeforeRenderingPrePasses, RenderQueueRange.opaque, data.opaqueLayerMask);
     }
 
     public override void Setup(ScriptableRenderContext context, ref RenderingData renderingData)
