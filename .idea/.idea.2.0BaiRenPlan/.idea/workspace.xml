@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af2997ac-8e6c-4b36-9e34-f5779714f8b5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader2.shader" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader2.shader.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Other_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Other_Renderer.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" afterDir="false" />
-    </list>
+    <list default="true" id="af2997ac-8e6c-4b36-9e34-f5779714f8b5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -142,7 +133,7 @@
       <workItem from="1692108866211" duration="832000" />
       <workItem from="1692110516912" duration="302000" />
       <workItem from="1692118660627" duration="6125000" />
-      <workItem from="1692126396389" duration="6773000" />
+      <workItem from="1692126396389" duration="7078000" />
     </task>
     <servers />
   </component>
