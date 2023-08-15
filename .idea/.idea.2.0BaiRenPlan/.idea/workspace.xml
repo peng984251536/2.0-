@@ -5,53 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af2997ac-8e6c-4b36-9e34-f5779714f8b5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/SimplexSettings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/SimplexSettings.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/WorleySettings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/WorleySettings.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/CS/NoiseGen_Data.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/CS/NoiseGen_Data.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogPass.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogPass.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Decal_Shadow/New Material 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Decal_Shadow/New Material 1.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Decal_Shadow/New Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Decal_Shadow/New Material.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Plane.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Plane.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Editor/NoiseGenEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Editor/NoiseGenEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/New Worley Noise Settings.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/New Worley Noise Settings.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/Compute/NoiseGenCompute.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/Compute/NoiseGenCompute.compute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/NoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/NoiseGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/CloudSky.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/CloudSky.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/Clouds.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/Clouds.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog_Shader.shader" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog_Shader.shader.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeLight/VolumeLightFrature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeLight/VolumeLightFrature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/TDBR/GPUIns+AT/Materials/GroundMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第三章/TDBR/GPUIns+AT/Materials/GroundMaterial.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/TDBR/GPUIns+Geo/Materials/GroundMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第三章/TDBR/GPUIns+Geo/Materials/GroundMaterial.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/DepthTexture/CustomScriptableRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/DepthTexture/CustomScriptableRenderer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/RenderFeature测试/TTT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/RenderFeature测试/TTT.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/传送门/New Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第三章/command和URP/传送门/New Material.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第五章/waterRender/New Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第五章/waterRender/New Material.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第五章/waterRender/ScreenSpaceReflection/background.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第五章/waterRender/ScreenSpaceReflection/background.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/第四章/Ssao/MySSAO/PBR.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/第四章/Ssao/MySSAO/PBR.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/ConstructionLight_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/ConstructionLight_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/DryWallPainted_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/DryWallPainted_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/DryWall_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/DryWall_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Ground_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Ground_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Hammer_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Hammer_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/HardHat_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/HardHat_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Jigsaw_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Jigsaw_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/LightBulb_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/LightBulb_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Liquid_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Liquid_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Metal_Blue_Simple_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Metal_Blue_Simple_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Metal_Simple_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Metal_Simple_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/OBS_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/OBS_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Paint1G_WAnim_Material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Paint1G_WAnim_Material.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/PaintBrush_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/PaintBrush_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/PaintLabel_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/PaintLabel_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Black_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Black_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Gray_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Gray_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Ridges_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Ridges_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Rough_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Rough_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Transparent.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Transparent.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_White_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_White_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Yellow_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Plastic_Yellow_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Strap_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Strap_Mat.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Stud_Mat.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ExampleAssets/Materials/Stud_Mat.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-MediumQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-MediumQuality.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-LowQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-LowQuality.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,21 +51,22 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3febd34c7754471c9a6f2c0dc5b747bb820000/c3/7e08766d/EditorApplication.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/07/20ea9de8/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/07/2ce66f77/Texture2D.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/AntiAliasing-main/Assets/Scripts/TAASimple.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/TAA_Unity_URP-master/Runtime/CameraSettingPass.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/TAA_Unity_URP-master/Runtime/HaltonSeq.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/TAA_Unity_URP-master/Runtime/TAAData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/TAA_Unity_URP-master/Runtime/TAAPass.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/TAA_Unity_URP-master/Runtime/TemporalAntiAliasing.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/URPTAA-master/Assets/Scripts/SimpleCameraController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://D:/qqDownload/Unity-Game-One-Biology-main/Assets/Scripts/Manager/GameMgr.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/4f/f873e9fd/FilteringSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/51/429755a7/RangeAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/UnityProject/2.0BaiRenPlan/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@12.1.11/ShaderLibrary/API/D3D11.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/Passes/ScriptableRenderPass.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/Core.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.timeline@1.6.5/Editor/treeview/Snapping/SnapEngine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventTrigger.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/DefaultControls.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Editor/CanvasRenderer/ChangingHierarchyOfCanvasRenderer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Editor/InputField/ContentValidation.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://F:/GameDownloads/2021.3.26f1c1/Editor/Data/CGIncludes/HLSLSupport.cginc" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -94,6 +79,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -133,10 +119,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="14600">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="14600" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -158,6 +144,16 @@
       <workItem from="1691485067065" duration="393000" />
       <workItem from="1691485471153" duration="1657000" />
       <workItem from="1691505403889" duration="6779000" />
+      <workItem from="1691577588362" duration="9484000" />
+      <workItem from="1691660042877" duration="6112000" />
+      <workItem from="1691745039468" duration="22703000" />
+      <workItem from="1691831765950" duration="350000" />
+      <workItem from="1691832562666" duration="10139000" />
+      <workItem from="1691844935691" duration="805000" />
+      <workItem from="1692003356028" duration="10112000" />
+      <workItem from="1692101192750" duration="355000" />
+      <workItem from="1692101619447" duration="1023000" />
+      <workItem from="1692102751002" duration="4348000" />
     </task>
     <servers />
   </component>

@@ -9,7 +9,7 @@ public class NoiseGenerator : MonoBehaviour {
     public const string shapeNoiseName = "ShapeNoise";
 
     public enum CloudNoiseType { Shape, Detail }
-    public enum TextureChannel { R, G, B, A }
+    public enum TextureChannel { R, G, B, A ,none}
 
     [Header ("Editor Settings")]
     public CloudNoiseType activeTextureType;
@@ -48,16 +48,20 @@ public class NoiseGenerator : MonoBehaviour {
     [SerializeField, HideInInspector]
     public RenderTexture detailTexture;
 
+    /// <summary>
+    /// 更新噪点贴图，主要在修改参数后触发
+    /// </summary>
     public void UpdateNoise () {
         ValidateParamaters ();
         CreateTexture (ref shapeTexture, shapeResolution, shapeNoiseName);
         CreateTexture (ref detailTexture, detailResolution, detailNoiseName);
 
+        //上诉开启更新后这里更新cs的信息
         if (updateNoise && noiseCompute) {
             var timer = System.Diagnostics.Stopwatch.StartNew ();
 
             updateNoise = false;
-            WorleyNoiseSettings activeSettings = ActiveSettings;
+            WorleyNoiseSettings activeSettings = ActiveSettings;//拿到配置信息
             if (activeSettings == null) {
                 return;
             }
@@ -79,13 +83,17 @@ public class NoiseGenerator : MonoBehaviour {
             //var noiseValuesBuffer = CreateBuffer (activeNoiseValues, sizeof (float) * 4, "values");
 
             // Dispatch noise gen kernel
+            //生成Worley噪点 到 3D噪点图 
+            //创建采样数
             int numThreadGroups = Mathf.CeilToInt (activeTextureResolution / (float) computeThreadGroupSize);
+            //启动内核0
             noiseCompute.Dispatch (0, numThreadGroups, numThreadGroups, numThreadGroups);
 
             // Set normalization kernel data:
             noiseCompute.SetBuffer (1, "minMax", minMaxBuffer);
             noiseCompute.SetTexture (1, "Result", ActiveTexture);
             // Dispatch normalization kernel
+            //启动内核1
             noiseCompute.Dispatch (1, numThreadGroups, numThreadGroups, numThreadGroups);
 
             if (logComputeTime) {
@@ -93,7 +101,7 @@ public class NoiseGenerator : MonoBehaviour {
                 // This allows us to measure the execution time.
                 var minMax = new int[2];
                 minMaxBuffer.GetData (minMax);
-
+                
                 Debug.Log ($"Noise Generation: {timer.ElapsedMilliseconds}ms");
             }
 
@@ -104,6 +112,11 @@ public class NoiseGenerator : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 用于
+    /// </summary>
+    /// <param name="saveName"></param>
+    /// <param name="target"></param>
     public void Load (string saveName, RenderTexture target) {
         string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name;
         saveName = sceneName + "_" + saveName;
@@ -122,6 +135,9 @@ public class NoiseGenerator : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 这里挑选设置的参数，但是默认是空的
+    /// </summary>
     public WorleyNoiseSettings ActiveSettings {
         get {
             WorleyNoiseSettings[] settings = (activeTextureType == CloudNoiseType.Shape) ? shapeSettings : detailSettings;
@@ -145,6 +161,10 @@ public class NoiseGenerator : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 更新CS里面的一个参数
+    /// </summary>
+    /// <param name="settings"></param>
     void UpdateWorley (WorleyNoiseSettings settings) {
         var prng = new System.Random (settings.seed);
         CreateWorleyPointsBuffer (prng, settings.numDivisionsA, "pointsA");
@@ -182,6 +202,14 @@ public class NoiseGenerator : MonoBehaviour {
     }
 
     // Create buffer with some data, and set in shader. Also add to list of buffers to be released
+    /// <summary>
+    /// buffersToRelease 重置
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="stride"></param>
+    /// <param name="bufferName"></param>
+    /// <param name="kernel"></param>
+    /// <returns></returns>
     ComputeBuffer CreateBuffer (System.Array data, int stride, string bufferName, int kernel = 0) {
         var buffer = new ComputeBuffer (data.Length, stride, ComputeBufferType.Structured);
         buffersToRelease.Add (buffer);
@@ -224,6 +252,9 @@ public class NoiseGenerator : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// 保证detailResolution和shapeResolution大于1
+    /// </summary>
     void ValidateParamaters () {
         detailResolution = Mathf.Max (1, detailResolution);
         shapeResolution = Mathf.Max (1, shapeResolution);

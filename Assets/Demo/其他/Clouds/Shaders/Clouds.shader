@@ -14,13 +14,19 @@ Shader "Hidden/Clouds"
 
         Pass
         {
+            Tags
+            {
+                "LightMode" = "UniversalForward" "RenderType" = "Opaque" "Queue" = "Geometry"
+            }
+            
             CGPROGRAM
 
             #pragma vertex vert
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/Scripts/Clouds/Shaders/CloudDebug.cginc"
+            #include "Assets/Demo/其他/Clouds/Shaders/CloudDebug.cginc"
+            //#include "Assets/Scripts/Clouds/Shaders/CloudDebug.cginc"
 
             // vertex input: position, UV
             struct appdata {

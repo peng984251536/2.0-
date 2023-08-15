@@ -10,14 +10,19 @@ public class NoiseGenEditor : Editor {
     NoiseGenerator noise;
     Editor noiseSettingsEditor;
 
+    /// <summary>
+    /// 在编辑器画出3个按键
+    /// </summary>
     public override void OnInspectorGUI () {
         DrawDefaultInspector ();
 
+        //更新
         if (GUILayout.Button ("Update")) {
             noise.ManualUpdate ();
             EditorApplication.QueuePlayerLoopUpdate ();
         }
 
+        //保存
         if (GUILayout.Button ("Save")) {
             Save ();
         }
@@ -35,7 +40,7 @@ public class NoiseGenEditor : Editor {
     void Save () {
 
         FindObjectOfType<Save3D> ().Save (noise.shapeTexture, NoiseGenerator.shapeNoiseName);
-        //FindObjectOfType<Save3D> ().Save (noise.detailTexture, NoiseGenerator.detailNoiseName);
+        FindObjectOfType<Save3D> ().Save (noise.detailTexture, NoiseGenerator.detailNoiseName);
     }
 
     void Load () {

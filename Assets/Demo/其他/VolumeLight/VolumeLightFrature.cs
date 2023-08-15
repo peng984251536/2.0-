@@ -93,6 +93,7 @@ public class VolumeLightFrature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        //Camera camera = renderingData.cameraData.camera;
         //renderObjectsPass.cameraRT = renderer.cameraColorTarget;
         renderer.EnqueuePass(renderObjectsPass);
     }

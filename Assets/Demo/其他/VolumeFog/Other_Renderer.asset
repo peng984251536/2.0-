@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
+  m_Name: Other_Renderer
+  m_EditorClassIdentifier: 
+  debugShaders:
+    debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
+  m_RendererFeatures:
+  - {fileID: 8703295106005286754}
+  m_RendererFeatureMap: 623fd770c950c878
+  m_UseNativeRenderPass: 0
+  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
+  shaders:
+    blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
+    copyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+    screenSpaceShadowPS: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
+    samplingPS: {fileID: 4800000, guid: 04c410c9937594faa893a11dceb85f7e, type: 3}
+    stencilDeferredPS: {fileID: 4800000, guid: e9155b26e1bc55942a41e518703fe304, type: 3}
+    fallbackErrorPS: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
+    materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
+    coreBlitPS: {fileID: 4800000, guid: 93446b5c5339d4f00b85c159e1159b7c, type: 3}
+    coreBlitColorAndDepthPS: {fileID: 4800000, guid: d104b2fc1ca6445babb8e90b0758136b, type: 3}
+    cameraMotionVector: {fileID: 4800000, guid: c56b7e0d4c7cb484e959caeeedae9bbf, type: 3}
+    objectMotionVector: {fileID: 4800000, guid: 7b3ede40266cd49a395def176e1bc486, type: 3}
+  m_AssetVersion: 2
+  m_OpaqueLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_TransparentLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_DefaultStencilState:
+    overrideStencilState: 0
+    stencilReference: 0
+    stencilCompareFunction: 8
+    passOperation: 2
+    failOperation: 0
+    zFailOperation: 0
+  m_ShadowTransparentReceive: 0
+  m_RenderingMode: 0
+  m_DepthPrimingMode: 0
+  m_CopyDepthMode: 0
+  m_AccurateGbufferNormals: 0
+  m_ClusteredRendering: 0
+  m_TileSize: 32
+  m_IntermediateTextureMode: 1
+--- !u!114 &8703295106005286754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056a2777be2e4cc797fd982ac02bd532, type: 3}
+  m_Name: VolumeFogFrature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _shapeSettings:
+    _shapeScale: {x: 2.5, y: 10, z: 3.2}
+    _shapeOffset: {x: 0, y: 0, z: -21.2}
+    _shapeNoiseWeights: {x: 3, y: 1, z: 2, w: 0}
+  _noiseSettings:
+    VolemeFog_Shader: {fileID: 4800000, guid: 4d69ce0c4ccf439cac8ef1ebded28bae, type: 3}
+    noiseTex: {fileID: 11700000, guid: 99f6a01ebdcf141409833d7f37fd2884, type: 2}
+    blueNoiseTex: {fileID: 2800000, guid: e6a3b9b41e4cade4cba705a81d2e29a8, type: 3}
+    rayOffsetStrength: 2
+    bounds: {fileID: 0}
+    _timeScale: 3
+    _baseSpeed: 1
+    _smoothMin: 0.3
+    _smoothMax: 1.04
+    _noiseModelVal: {x: 0, y: 1}
+  _DetailSettings:
+    _DetailNoiseTex: {fileID: 11700000, guid: d751898311928814f9a845c309849ac4, type: 2}
+    _detailNoiseScale: {x: 10, y: 20, z: 12}
+    _detailOffset: {x: 0, y: 0, z: 0}
+    _detailSpeed: 0
+    _smoothVal: {x: -1.05, y: 1}
+  _Shape2Settings:
+    _shape2NoiseTex: {fileID: 2800000, guid: b6a94bb78f898f042ab8aedc9f2a67be, type: 2}
+    _shape2Scale: {x: 0.8, y: 3, z: 0.9}
+    _shape2Offset: {x: 0, y: 0, z: -11.69}
+    _smoothMin2: 0.45
+    _smoothMax2: 0.99
+  _LightMarchSettings:
+    _numStepsLight: 10
+    _lightAbsorptionTowardSun: 1
+    _darknessThreshold: 1
+    _lightMarchScale: 1
