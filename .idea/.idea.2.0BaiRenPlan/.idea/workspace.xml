@@ -5,37 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af2997ac-8e6c-4b36-9e34-f5779714f8b5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogPass.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogPass.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader2.shader" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader2.shader.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2.0BaiRenPlan/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Editor/NoiseGenEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Editor/NoiseGenEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/New Worley Noise Settings.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/New Worley Noise Settings.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/Compute/NoiseGenCompute.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/Compute/NoiseGenCompute.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/NoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Noise/NoiseGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/CloudSky.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/CloudSky.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/Clouds.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/Shaders/Clouds.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise.asset.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_DetailNoise_2D.asset.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise.asset.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/Clouds/tex/VolumeFog_ShapeNoise_2D.asset.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/Other_Renderer.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Other_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Other_Renderer.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/Shaders/VolumeFog_Shader.shader" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog_Shader.shader" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/VolumeFog_Shader.shader.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeLight/VolumeLightFrature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeLight/VolumeLightFrature.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-HighQuality.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP-LowQuality.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP-LowQuality.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,10 +33,18 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/07/2ce66f77/Texture2D.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/4f/f873e9fd/FilteringSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/578f34a7c8a04f7a8b8da11bb13cb70b15a200/51/429755a7/RangeAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://E:/UnityProject/2.0BaiRenPlan/Assets/Demo/其他/VolumeFog/renderFeature/VolumeFogFrature.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@12.1.11/ShaderLibrary/API/D3D11.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@12.1.11/ShaderLibrary/EntityLighting.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Editor/AssetPostProcessors/AutodeskInteractiveMaterialImport.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Editor/AssetPostProcessors/ThreeDSMaterialDescriptionPostprocessor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Editor/ShaderGUI/ShaderGraphLitGUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/Passes/ScriptableRenderPass.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/BRDF.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/Core.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/Debug/Debugging3D.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/GlobalIllumination.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/ShaderLibrary/Lighting.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.timeline@1.6.5/Editor/treeview/Snapping/SnapEngine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventTrigger.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/DefaultControls.cs" root0="SKIP_HIGHLIGHTING" />
@@ -153,7 +138,11 @@
       <workItem from="1692003356028" duration="10112000" />
       <workItem from="1692101192750" duration="355000" />
       <workItem from="1692101619447" duration="1023000" />
-      <workItem from="1692102751002" duration="4348000" />
+      <workItem from="1692102751002" duration="5000000" />
+      <workItem from="1692108866211" duration="832000" />
+      <workItem from="1692110516912" duration="302000" />
+      <workItem from="1692118660627" duration="6125000" />
+      <workItem from="1692126396389" duration="6773000" />
     </task>
     <servers />
   </component>

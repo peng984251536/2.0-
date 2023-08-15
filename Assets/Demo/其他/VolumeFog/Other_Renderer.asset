@@ -75,19 +75,19 @@ MonoBehaviour:
     VolemeFog_Shader: {fileID: 4800000, guid: 4d69ce0c4ccf439cac8ef1ebded28bae, type: 3}
     noiseTex: {fileID: 11700000, guid: 99f6a01ebdcf141409833d7f37fd2884, type: 2}
     blueNoiseTex: {fileID: 2800000, guid: e6a3b9b41e4cade4cba705a81d2e29a8, type: 3}
-    rayOffsetStrength: 2
+    rayOffsetStrength: 2.34
     bounds: {fileID: 0}
-    _timeScale: 3
+    _timeScale: 2.2
     _baseSpeed: 1
     _smoothMin: 0.3
-    _smoothMax: 1.04
+    _smoothMax: 0.8
     _noiseModelVal: {x: 0, y: 1}
   _DetailSettings:
     _DetailNoiseTex: {fileID: 11700000, guid: d751898311928814f9a845c309849ac4, type: 2}
-    _detailNoiseScale: {x: 10, y: 20, z: 12}
+    _detailNoiseScale: {x: 15, y: 35, z: 15}
     _detailOffset: {x: 0, y: 0, z: 0}
     _detailSpeed: 0
-    _smoothVal: {x: -1.05, y: 1}
+    _smoothVal: {x: -1.64, y: 1}
   _Shape2Settings:
     _shape2NoiseTex: {fileID: 2800000, guid: b6a94bb78f898f042ab8aedc9f2a67be, type: 2}
     _shape2Scale: {x: 0.8, y: 3, z: 0.9}
@@ -95,7 +95,7 @@ MonoBehaviour:
     _smoothMin2: 0.45
     _smoothMax2: 0.99
   _LightMarchSettings:
-    _numStepsLight: 10
-    _lightAbsorptionTowardSun: 1
-    _darknessThreshold: 1
-    _lightMarchScale: 1
+    _numStepsLight: 15
+    _lightAbsorptionTowardSun: 0.55
+    _darknessThreshold: 0.41
+    _lightMarchScale: 0.2

@@ -16,11 +16,11 @@ public class VolumeFogFrature : ScriptableRendererFeature
     {
         //lightMarchSettings
         public int _numStepsLight = 10;
-        [Range(0,1)]
+        [Range(-2,2)]
         public float _lightAbsorptionTowardSun = 1.0f;
-        [Range(0,1)]
+        [Range(-2,2)]
         public float _darknessThreshold = 1.0f;
-        [Range(0,1)]
+        [Range(-2,2)]
         public float _lightMarchScale = 1.0f;
     }
     
