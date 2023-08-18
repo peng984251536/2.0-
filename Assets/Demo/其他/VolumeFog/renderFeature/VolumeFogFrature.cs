@@ -22,6 +22,9 @@ public class VolumeFogFrature : ScriptableRendererFeature
         public float _darknessThreshold = 1.0f;
         [Range(-2,2)]
         public float _lightMarchScale = 1.0f;
+
+        public float _lightMarchStep = 2.0f;
+        public Vector4 _phaseParams = new Vector4(1,1,1,1);
     }
     
     [System.Serializable]
@@ -64,38 +67,50 @@ public class VolumeFogFrature : ScriptableRendererFeature
         public Shader VolemeFog_Shader;
         public Texture3D noiseTex;
         public Texture2D blueNoiseTex;
+        public float blueSize;
         public float rayOffsetStrength = 1.0f;
         public Transform bounds;
 
-        [Header("--------------")] 
-        [Range(0,100)]
-        public float _timeScale = 1.0f;
-        public float _baseSpeed = 1.0f;
+        [FormerlySerializedAs("_timeScale")] [Header("--------------")] 
+        //[Range(0,100)]
+        public float _RayStepScale = 1.0f;
+        [Range(0,10)]
+        public float _baseSpeed = 1.33f;
         
         [Header("--------------")] 
         [Range(-2,2)]
         public float _smoothMin = 0.0f;
         [Range(-2,2)]
         public float _smoothMax = 1.0f;
-        
         public Vector2 _noiseModelVal = new Vector2(0,1);
     }
-    
+    private VolumeFogPass pass;
+    public Material volemeFog;
+    [Range(1,10)]
+    public float downsampleDivider = 0.8f;
+    [Header("--------------")] 
     public ShapeSettings _shapeSettings = new ShapeSettings();
     public NoiseSettings _noiseSettings = new NoiseSettings();
     public DetailSettings _DetailSettings = new DetailSettings();
     public Shape2Settings _Shape2Settings = new Shape2Settings();
     public lightMarchSettings _LightMarchSettings = new lightMarchSettings();
+
+    [Header("------bilateralParams--------")]
+    public Vector4 _bilateralParams = new Vector4(1, 1, 1, 1);
+
+    [Header("------windSetting--------")] 
+    public Vector3 windDir = new Vector3(0, 0, 0);
+
+    public Vector3 windSpeed = new Vector3(1.0f,1,1);
+    public float _timeScale = 0.1f;
     
-    private Material volemeFog;
-    private VolumeFogPass pass;
 
     public override void Create()
     {
-        if (_noiseSettings.VolemeFog_Shader != null)
-            volemeFog = new Material(_noiseSettings.VolemeFog_Shader);
+        // if (_noiseSettings.VolemeFog_Shader != null&&volemeFog != null)
+        //     volemeFog = new Material(_noiseSettings.VolemeFog_Shader);
 
-        if (volemeFog != null)
+        if (volemeFog != null&&pass==null)
         {
             pass = new VolumeFogPass(name, _shapeSettings, _noiseSettings, volemeFog);
         }
@@ -113,8 +128,10 @@ public class VolumeFogFrature : ScriptableRendererFeature
         if (_noiseSettings.noiseTex == null)
             return;
 
+        pass.downsampleDivider = this.downsampleDivider;
         Shader.SetGlobalTexture("_NoiseTex", _noiseSettings.noiseTex);
         Shader.SetGlobalTexture("_blueNoiseTex", _noiseSettings.blueNoiseTex);
+        Shader.SetGlobalFloat("_blueSize", _noiseSettings.blueSize);
 
         Vector3 pos = _noiseSettings.bounds.gameObject.transform.position;
         Vector3 boundMin = pos - _noiseSettings.bounds.gameObject.transform.localScale * 0.5f;
@@ -130,7 +147,7 @@ public class VolumeFogFrature : ScriptableRendererFeature
         Shader.SetGlobalVector("_shapeNoiseWeights", _shapeSettings._shapeNoiseWeights);
 
         //--------------noise--------------//
-        Shader.SetGlobalFloat("_timeScale", _noiseSettings._timeScale);
+        Shader.SetGlobalFloat("_RayStepScale", _noiseSettings._RayStepScale);
         Shader.SetGlobalFloat("_baseSpeed", _noiseSettings._baseSpeed);
         Shader.SetGlobalFloat("_smoothMin", _noiseSettings._smoothMin);
         Shader.SetGlobalFloat("_smoothMax", _noiseSettings._smoothMax);
@@ -159,10 +176,16 @@ public class VolumeFogFrature : ScriptableRendererFeature
                 _LightMarchSettings._lightMarchScale
                 );
         Shader.SetGlobalVector("_lightMarchParams", lightMarchParams);
+        Shader.SetGlobalFloat("_lightMarchStep", _LightMarchSettings._lightMarchStep);
+        Shader.SetGlobalVector("_phaseParams", _LightMarchSettings._phaseParams);
+        Shader.SetGlobalVector("_bilateralParams",_bilateralParams);
+        
+        //----wind-----//
+        Shader.SetGlobalVector("_windDir", windDir.normalized);
+        Shader.SetGlobalVector("_windSpeed", windSpeed);
+        Shader.SetGlobalFloat("_timeScale", _timeScale);
 
-
-
-        // if (pass != null)
-        //     renderer.EnqueuePass(pass);
+        if (pass != null)
+            renderer.EnqueuePass(pass);
     }
 }

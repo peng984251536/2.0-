@@ -67,35 +67,44 @@ MonoBehaviour:
   m_Name: VolumeFogFrature
   m_EditorClassIdentifier: 
   m_Active: 1
+  volemeFog: {fileID: 2100000, guid: b4cbb4e395dd8c442aed2d715f79536a, type: 2}
+  downsampleDivider: 2
   _shapeSettings:
-    _shapeScale: {x: 2.5, y: 10, z: 3.2}
-    _shapeOffset: {x: 0, y: 0, z: -21.2}
+    _shapeScale: {x: 3, y: 13.05, z: 3.5}
+    _shapeOffset: {x: 2, y: 1, z: 2}
     _shapeNoiseWeights: {x: 3, y: 1, z: 2, w: 0}
   _noiseSettings:
     VolemeFog_Shader: {fileID: 4800000, guid: 4d69ce0c4ccf439cac8ef1ebded28bae, type: 3}
     noiseTex: {fileID: 11700000, guid: 99f6a01ebdcf141409833d7f37fd2884, type: 2}
     blueNoiseTex: {fileID: 2800000, guid: e6a3b9b41e4cade4cba705a81d2e29a8, type: 3}
-    rayOffsetStrength: 2.34
+    blueSize: 1.51
+    rayOffsetStrength: 2
     bounds: {fileID: 0}
-    _timeScale: 2.2
+    _RayStepScale: 2.48
     _baseSpeed: 1
     _smoothMin: 0.3
     _smoothMax: 0.8
     _noiseModelVal: {x: 0, y: 1}
   _DetailSettings:
     _DetailNoiseTex: {fileID: 11700000, guid: d751898311928814f9a845c309849ac4, type: 2}
-    _detailNoiseScale: {x: 15, y: 35, z: 15}
-    _detailOffset: {x: 0, y: 0, z: 0}
+    _detailNoiseScale: {x: 9, y: 30, z: 9}
+    _detailOffset: {x: 1, y: 0.2, z: 1}
     _detailSpeed: 0
-    _smoothVal: {x: -1.64, y: 1}
+    _smoothVal: {x: -0.82, y: 0.75}
   _Shape2Settings:
     _shape2NoiseTex: {fileID: 2800000, guid: b6a94bb78f898f042ab8aedc9f2a67be, type: 2}
-    _shape2Scale: {x: 0.8, y: 3, z: 0.9}
-    _shape2Offset: {x: 0, y: 0, z: -11.69}
-    _smoothMin2: 0.45
-    _smoothMax2: 0.99
+    _shape2Scale: {x: 1.12, y: 3, z: 1.19}
+    _shape2Offset: {x: 1, y: 0, z: 1}
+    _smoothMin2: 0.37
+    _smoothMax2: 1.1
   _LightMarchSettings:
-    _numStepsLight: 15
-    _lightAbsorptionTowardSun: 0.55
-    _darknessThreshold: 0.41
-    _lightMarchScale: 0.2
+    _numStepsLight: 4
+    _lightAbsorptionTowardSun: 0.82
+    _darknessThreshold: 1
+    _lightMarchScale: 0.09
+    _lightMarchStep: 2
+    _phaseParams: {x: 0.7, y: 0.83, z: 1.05, w: 4.75}
+  _bilateralParams: {x: 0.7, y: 0.7, z: 1, w: 1}
+  windDir: {x: 113.3, y: 1, z: -53.4}
+  windSpeed: {x: 3, y: 0.2, z: 2.5}
+  _timeScale: 1.39

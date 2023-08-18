@@ -2,7 +2,7 @@
 {
     Properties
     {
-        //        _MainTex("MainTex",2D) = "while"{}
+        //        _VolumeFogRT("MainTex",2D) = "while"{}
         _BaseColor("outline color",color) = (1,1,1,1)
 
         //        _SRef("Stencil Ref", Float) = 1
@@ -11,6 +11,42 @@
     }
 
     HLSLINCLUDE
+    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/EntityLighting.hlsl"
+    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ImageBasedLighting.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+    
+    float4 _phaseParams;
+    float4x4 _VPMatrix_invers;
+    // float _BilaterFilterFactor; //法线判定的插值
+    // float2 _BlurRadius; //滤波的采样范围
+    float4 _bilateralParams; //x:BlurRadius.x||y:BlurRadius.y||z:BilaterFilterFactor
+    #define BlurRadiusX _bilateralParams.x
+    #define BlurRadiusY _bilateralParams.y
+    #define BilaterFilterFactor _bilateralParams.z
+    #define DirectLightingStrength _bilateralParams.w
+    
+
+    struct a2v
+    {
+        uint vertexID :SV_VertexID;
+    };
+
+    struct v2f
+    {
+        float4 pos:SV_Position;
+        float2 uv:TEXCOORD0;
+    };
+
+    v2f vert(a2v IN)
+    {
+        v2f o;
+        o.pos = GetFullScreenTriangleVertexPosition(IN.vertexID);
+        o.uv = GetFullScreenTriangleTexCoord(IN.vertexID);
+        return o;
+    }
+
     // Returns (dstToBox, dstInsideBox). If ray misses box, dstInsideBox will be zero
     //根据包围盒的最大距离、最小距离、射线步近位置、射线步近的向量的倒数
     //计算出第一次接触的位置、到达第二次接触的距离
@@ -43,6 +79,20 @@
     {
         return minNew + (v - minOld) * (maxNew - minNew) / (maxOld - minOld);
     }
+
+    // Henyey-Greenstein
+    float hg(float a, float g)
+    {
+        float g2 = g * g;
+        return (1 - g2) / (4 * 3.1415 * pow(1 + g2 - 2 * g * (a), 1.5));
+    }
+
+    float phase(float a)
+    {
+        float blend = .5;
+        float hgBlend = hg(a, _phaseParams.x) * (1 - blend) + hg(a, -_phaseParams.y) * blend;
+        return _phaseParams.z + hgBlend * _phaseParams.w;
+    }
     ENDHLSL
 
     Subshader
@@ -51,23 +101,16 @@
         {
             Tags
             {
-                "LightMode" = "UniversalForward" "RenderType" = "Opaque" "Queue" = "Geometry"
+                //"LightMode" = "VF_RayMarch"
+                "RenderType" = "Opaque"// "Queue" = "Geometry"
             }
 
+            Name "VF_RayMarch"
             //Blend SrcAlpha OneMinusSrcAlpha
-            ZTest On
+            Cull Off
             ZWrite Off
             ZTest Always
-            Cull Front
 
-            //            Stencil
-            //            {
-            //                Ref[_SRef]
-            //                Comp[_SComp]
-            //                Pass[_SOp]
-            //                Fail keep
-            //                ZFail keep
-            //            }
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -76,21 +119,6 @@
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-            struct appdata
-            {
-                float4 vertex: POSITION;
-                float3 normal:NORMAL;
-                float2 uv :TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                float4 vertex: SV_POSITION;
-                float2 uv:TEXCOORD0;
-                float3 viewDir:TEXCOORD1;
-                float3 posWS:TEXCOORD2;
-                float3 normalWS:TEXCOORD3;
-            };
 
             TEXTURE3D(_NoiseTex);
             SAMPLER(sampler_NoiseTex);
@@ -100,8 +128,8 @@
             SAMPLER(sampler_blueNoiseTex);
             TEXTURE2D(_shape2NoiseTex);
             SAMPLER(sampler_shape2NoiseTex);
-            TEXTURE2D(_CameraOpaqueTexture);
-            SAMPLER(sampler_CameraOpaqueTexture);
+            TEXTURE2D(_CameraTexture);
+            SAMPLER(sampler_CameraTexture);
             TEXTURE2D_X(_CameraDepthTexture);
             SAMPLER(sampler_CameraDepthTexture);
             float4 _CameraDepthTexture_ST;
@@ -111,11 +139,12 @@
             float3 _shapeScale;
             float3 _shapeOffset;
             float4 _shapeNoiseWeights;
+            float _blueSize;
             //Params
             float3 _boundsMin;
             float3 _boundsMax;
             float _rayOffsetStrength;
-            float _timeScale;
+            float _RayStepScale;
             float _baseSpeed;
             float _smoothMin;
             float _smoothMax;
@@ -136,10 +165,17 @@
 
             //lightMarchParams
             float4 _lightMarchParams;
+            float _lightMarchStep;
             #define numStepsLight _lightMarchParams.x
             #define lightAbsorptionTowardSun _lightMarchParams.y
             #define darknessThreshold _lightMarchParams.z
             #define lightMarchScale _lightMarchParams.w
+
+            //windSetting
+            float3 _windDir;
+            float3 _windSpeed;
+            float _timeScale;
+            
 
 
             //采样噪声贴图
@@ -156,14 +192,13 @@
                 const float densityOffset = 1;
 
                 // Calculate texture sample positions
-                float time = _Time.x * _timeScale;
+                float time = _Time.y * _timeScale;
+                float3 wind = _windDir*_windSpeed;
                 float3 size = _boundsMax - _boundsMin;
                 float3 boundsCentre = (_boundsMin + _boundsMax) * .5;
                 float3 uvw = (size * .5 + rayPos) * baseScale;
-                float3 shapeSamplePos = uvw + _shapeOffset * offsetSpeed +
-                    float3(time, time * 0.1, time * 0.2) *
-                    baseSpeed;
-                shapeSamplePos = uvw * _shapeScale + _shapeOffset * offsetSpeed;
+                float3 shapeSamplePos = uvw * _shapeScale +
+                    _shapeOffset * offsetSpeed*wind*time;
 
                 // Calculate falloff at along x/z edges of the cloud container
                 //设置远点到边缘的距离，点越远离50，边缘衰减越大
@@ -199,7 +234,8 @@
                 //return baseShapeDensity;
 
                 //云整体形状，防止重复度太高
-                float2 shape2ScalePos = uvw.xz * _shape2Scale.xz + _shape2Offset.xz * offsetSpeed;
+                float2 shape2ScalePos = uvw.xz * _shape2Scale.xz +
+                    _shape2Offset.xz * offsetSpeed*wind*time;
                 float modelNoise = SAMPLE_TEXTURE2D(_shape2NoiseTex, sampler_shape2NoiseTex, shape2ScalePos).b;
                 modelNoise = 1 - smoothstep(_smoothMin2, _smoothMax2, modelNoise);
                 baseShapeDensity = modelNoise * baseShapeDensity;
@@ -214,8 +250,8 @@
                 if (baseShapeDensity > 0)
                 {
                     // Sample detail noise
-                    float3 detailSamplePos = uvw * _detailNoiseScale + _detailOffset * offsetSpeed;
-                    //+ float3(time * .4, -time, time * 0.1) * _detailSpeed;
+                    float3 detailSamplePos = uvw * _detailNoiseScale +
+                        _detailOffset * offsetSpeed*wind*time;
                     float detailNoise = SAMPLE_TEXTURE3D(_DetailNoiseTex, sampler_DetailNoiseTex, detailSamplePos).r;
                     float detailFBM = smoothstep(_smoothVal.x, _smoothVal.y, detailNoise);
                     //return detailNoise;
@@ -233,84 +269,59 @@
                 }
                 return baseShapeDensity;
             }
-
-            // Calculate proportion of light that reaches the given point from the lightsource
-            //光线衰减函数
-            // float lightmarch(float3 position)
-            // {
-            //     //return position.y;
-            //     float3 lighdirToLight = normalize(_MainLightPosition.xyz);
-            //     float lighdstInsideBox = rayBoxDst(_boundsMin, _boundsMax,
-            //         position, 1 / lighdirToLight).y;
-            //
-            //     numStepsLight = min(numStepsLight, 5);
-            //     float num = (numStepsLight+1)*numStepsLight*0.5;
-            //     float stepSizeOne = lighdstInsideBox/num;
-            //     float stepSize = stepSizeOne;
-            //     float totalDensity = 0;
-            //
-            //     //return  sampleDensity(position);
-            //
-            //     //[unroll(10)]
-            //      for (int step = 0; step < numStepsLight; step ++)
-            //      {
-            //          position += lighdirToLight * stepSize;
-            //          totalDensity += max(0, sampleDensity(position) * stepSize);
-            //          stepSize += stepSizeOne; 
-            //      }
-            //
-            //     float transmittance = exp(-totalDensity * lightAbsorptionTowardSun);
-            //     return transmittance;
-            //     return darknessThreshold + transmittance * (1 - darknessThreshold);
-            // }
-
-            v2f vert(appdata v)
-            {
-                v2f o;
-                //v.vertex.xyz += _Width * normalize(v.vertex.xyz);
-
-                o.vertex = TransformObjectToHClip(v.vertex.xyz);
-                o.posWS = TransformObjectToWorld(v.vertex.xyz);
-                o.viewDir = normalize(o.posWS.xyz - _WorldSpaceCameraPos.xyz);
-                o.normalWS = TransformObjectToWorldNormal(v.normal);
-                return o;
-            }
+            
 
             half4 frag(v2f i) : SV_Target
             {
-                //float4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                float2 screenUV = (i.vertex.xy / _ScreenParams.xy);
-                float3 baseColor = SAMPLE_TEXTURE2D(_CameraOpaqueTexture,
-                                                    sampler_CameraOpaqueTexture, screenUV).rgb;
-                i.viewDir = normalize(i.posWS - _WorldSpaceCameraPos.xyz);
-                //return float4( i.viewDir,1);
+                //float4 tex = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, i.uv);
+                float2 screenUV = i.uv;
+                float3 baseColor = SAMPLE_TEXTURE2D(_CameraTexture,
+                                                    sampler_CameraTexture, screenUV).rgb;
+                float4 viewPos = mul(_VPMatrix_invers, float4(screenUV*2-1, 1, 1));
+                viewPos /= viewPos.w;
+                float3 viewDir = normalize(viewPos - _WorldSpaceCameraPos.xyz);
+                //return viewPos.x;
+                //return float4(viewPos.xy,0,1);
+                //return float4(viewDir.xyz,1);
 
 
                 // Depth and cloud container intersection info:
                 float nonlin_depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture,
                                                         sampler_CameraDepthTexture, screenUV).r;
-                float depth = LinearEyeDepth(nonlin_depth, _ProjectionParams);
+                float depth = LinearEyeDepth(nonlin_depth, _ZBufferParams);
                 float2 rayToContainerInfo = rayBoxDst(_boundsMin, _boundsMax,
-                                                      _WorldSpaceCameraPos.xyz, 1 / i.viewDir);
-                float depth2 = (i.vertex.z + 1) * 0.5;
+                                                      _WorldSpaceCameraPos.xyz, 1 / viewDir);
                 float dstToBox = rayToContainerInfo.x;
                 float dstInsideBox = rayToContainerInfo.y;
+                dstInsideBox = min(dstInsideBox,depth);
+                dstToBox =  min(dstToBox,depth);
+                //return depth-_timeScale;
 
+                float3 rayPos = _WorldSpaceCameraPos.xyz;
+                //return dstToBox - _timeScale;
+                float3 entryPoint = rayPos + normalize(viewDir) * dstToBox; //开始位置
 
                 // 
-                float randomOffset = SAMPLE_TEXTURE2D(_blueNoiseTex, sampler_blueNoiseTex, screenUV).r;
-                randomOffset = _rayOffsetStrength * (randomOffset * 0.7 + 0.3);
+                float randomOffset = SAMPLE_TEXTURE2D(_blueNoiseTex, sampler_blueNoiseTex, screenUV*_blueSize).r;
+                randomOffset = _rayOffsetStrength * (randomOffset);
+                //return randomOffset;
                 float dstTravelled = randomOffset;
-                float dstLimit = min(i.vertex.w - dstToBox, dstInsideBox); //步近最远距离
-                dstLimit = max(1, dstInsideBox);
-                float3 rayPos = _WorldSpaceCameraPos.xyz;
-                float3 entryPoint = rayPos + normalize(i.viewDir) * dstToBox; //开始位置
+                //float dstLimit = min(i.vertex.w - dstToBox, dstInsideBox); //步近最远距离
+                float dstLimit = max(3, dstInsideBox);
 
 
                 // March through volume:
                 float transmittance = 1;
                 float3 lightEnergy = 0;
-                float stepSize = _timeScale;
+                float stepSize1 = _RayStepScale;
+
+                // Phase function makes clouds brighter around sun
+                //控制高光
+                float cosAngle = dot(viewDir, _MainLightPosition.xyz);
+                float cosAngle2 = dot(-viewDir, _MainLightPosition.xyz);
+                cosAngle = min(cosAngle, cosAngle2);
+                float phaseVal = phase(cosAngle);
+                //return phaseVal;
 
 
                 //我的，计算与正方体交点
@@ -334,13 +345,13 @@
                 // return lightTransmittance;
 
 
-                [unroll(50)]
+                [unroll(30)]
                 for (int n = 0; dstLimit > dstTravelled; n++)
                 {
                     if (n >= 80)
                         break;
 
-                    rayPos = entryPoint + i.viewDir * (dstTravelled);
+                    rayPos = entryPoint + viewDir * (dstTravelled);
                     //return float4(entryPoint, 1);
                     float density = sampleDensity(rayPos);
                     //return density;
@@ -355,24 +366,25 @@
                         numStepsLight = min(numStepsLight, 4);
                         float num = (numStepsLight + 1) * numStepsLight * 0.5;
                         float stepSizeOne = dstInsideBox / num;
-                        float stepSize = stepSizeOne;
+                        //stepSizeOne = _lightMarchStep;
+                        float stepSize2 = stepSizeOne;
                         float totalDensity = 0;
                         float3 lightPos = rayPos;
                         for (int step = 0; step < numStepsLight; step ++)
                         {
-                            lightPos += dirToLight * stepSize;
-                            totalDensity += max(0, sampleDensity(lightPos) * stepSize);
-                            stepSize += stepSizeOne;
+                            lightPos += dirToLight * stepSize2;
+                            totalDensity += max(0, sampleDensity(lightPos) * stepSize2);
+                            stepSize2 += stepSizeOne;
                         }
                         float lightTransmittance = exp(-totalDensity * lightAbsorptionTowardSun);
                         //return transmittance;
                         //return darknessThreshold + transmittance * (1 - darknessThreshold);
-                        lightEnergy += lightTransmittance;
+                        lightEnergy += density * stepSize2 * transmittance * lightTransmittance * phaseVal;
 
                         //云密度计算
                         //lightEnergy += density * stepSize * transmittance * lightTransmittance * phaseVal;
                         //transmittance *= exp(-density * stepSize * lightAbsorptionThroughCloud);
-                        transmittance *= exp(-density * stepSize);
+                        transmittance *= exp(-density * stepSize2);
 
 
                         // Exit early if T is close to zero as further samples won't affect the result much
@@ -381,25 +393,193 @@
                             break;
                         }
                     }
-                    dstTravelled += stepSize;
+                    dstTravelled += stepSize1;
                 }
                 lightEnergy = lightEnergy * lightMarchScale * _MainLightColor.rgb;
 
-                
-                //环境光
-                half3 ambient_GI = SampleSH(float3(0,1,0)); //环境光
-                float3 ambientLight = ambient_GI*(1-transmittance)*darknessThreshold;
 
-                
-                float3 finalColor = lerp(lightEnergy,baseColor.rgb,transmittance);//
+                //环境光
+                half3 ambient_GI = SampleSH(float3(0, 1, 0)); //环境光
+                ambient_GI = _GlossyEnvironmentColor ;
+                float3 ambientLight = ambient_GI * (1 - transmittance) * darknessThreshold;
+                //return float4(ambient_GI,1-transmittance);
+                //return float4(ambientLight,1);
+
+
+                float3 finalColor = lerp(lightEnergy, baseColor.rgb, transmittance); //
                 //return lightEnergy * lightMarchScale;
                 //return transmittance;
                 //return transmittance* + lightEnergy * lightMarchScale;
                 //transmittance = smoothstep(0, 1, transmittance);
                 //return float4(0, 0, 0, 1 - transmittance);
                 //return float4(ambient_GI, 1);
-                return float4(finalColor+ambientLight, 1);
+                //return float4(transmittance, transmittance, transmittance, transmittance);
+                return float4(finalColor + ambientLight, transmittance);
                 //return float4(transmittance.rgb, 0.9);
+            }
+            ENDHLSL
+        }
+        
+        // 2 - Horizontal Blur
+        Pass
+        {
+            //双边滤波_水平
+            Name "Horizontal_BilaterFilter"
+            ZTest Always
+            ZWrite Off
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag_bilateralnormal
+            #pragma multi_compile_local _SOURCE_DEPTH _SOURCE_DEPTH_NORMALS _SOURCE_GBUFFER
+            #pragma multi_compile_local _RECONSTRUCT_NORMAL_LOW _RECONSTRUCT_NORMAL_MEDIUM _RECONSTRUCT_NORMAL_HIGH
+            #pragma multi_compile_local _ORTHOGRAPHIC
+
+            // TEXTURE2D(_MainTex);
+            // SAMPLER(sampler_MainTex);
+            // float2 _MainTex_TexelSize;
+
+            TEXTURE2D_X(_VolumeFogRT);
+            SAMPLER(sampler_VolumeFogRT);
+            float4 _VolumeFogRT_TexelSize;
+            
+
+            float4 frag_bilateralnormal(v2f i) : SV_Target
+            {
+                float2 delta = _VolumeFogRT_TexelSize.xy * _bilateralParams.xy;
+
+                float2 uv = i.uv;
+                // return float4(i.uv,0,1);
+                
+                float2 uv0a = i.uv - float2(1.0, 0) * delta;
+                float2 uv0b = i.uv + float2(1.0, 0) * delta;
+                float2 uv1a = i.uv - float2(2.0, 0) * delta;
+                float2 uv1b = i.uv + float2(2.0, 0) * delta;
+
+                // float3 normal0 = GetNormal(uv);
+                // float3 normal1 = GetNormal(uv0a);
+                // float3 normal2 = GetNormal(uv0b);
+                // float3 normal3 = GetNormal(uv1a);
+                // float3 normal4 = GetNormal(uv1b);
+
+                float4 col = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv);
+                float4 col0a = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv0a);
+                float4 col0b = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv0b);
+                float4 col1a = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv1a);
+                float4 col1b = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv1b);
+
+                half w = 0.4026;
+                half w0a = 0.0545;
+                half w0b =  0.0545;
+                half w1a =  0.2442;
+                half w1b =  0.2442;
+
+
+                half4 result = w * col;
+                result += w0a * col0a;
+                result += w0b * col0b;
+                result += w1a * col1a;
+                result += w1b * col1b;
+
+                result = result / (w + w0a + w0b + w1a + w1b);
+                return float4(result.rgb, result.a);
+            }
+            ENDHLSL
+        }
+
+        // 2 - Vertical Blur
+        Pass
+        {
+            Name "Vertical_BilaterFilter"
+            ZTest Always
+            ZWrite Off
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag_bilateralnormal
+            #pragma multi_compile_local _SOURCE_DEPTH _SOURCE_DEPTH_NORMALS _SOURCE_GBUFFER
+            #pragma multi_compile_local _RECONSTRUCT_NORMAL_LOW _RECONSTRUCT_NORMAL_MEDIUM _RECONSTRUCT_NORMAL_HIGH
+            #pragma multi_compile_local _ _ORTHOGRAPHIC
+
+            // TEXTURE2D(_MainTex);
+            // SAMPLER(sampler_MainTex);
+            // float2 _MainTex_TexelSize;
+
+            TEXTURE2D(_VolumeFogRT);
+            SAMPLER(sampler_VolumeFogRT);
+            float2 _VolumeFogRT_TexelSize;
+            
+
+            float4 frag_bilateralnormal(v2f i) : SV_Target
+            {
+                float2 delta = _VolumeFogRT_TexelSize.xy * _bilateralParams.xy;
+
+                float2 uv = i.uv;
+                float2 uv0a = i.uv - float2(0, 1.0) * delta;
+                float2 uv0b = i.uv + float2(0, 1.0) * delta;
+                float2 uv1a = i.uv - float2(0, 2.0) * delta;
+                float2 uv1b = i.uv + float2(0, 2.0) * delta;
+
+                // float3 normal0 = GetNormal(uv);
+                // float3 normal1 = GetNormal(uv0a);
+                // float3 normal2 = GetNormal(uv0b);
+                // float3 normal3 = GetNormal(uv1a);
+                // float3 normal4 = GetNormal(uv1b);
+
+                float4 col = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv);
+                float4 col0a = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv0a);
+                float4 col0b = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv0b);
+                float4 col1a = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv1a);
+                float4 col1b = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv1b);
+                
+                half w = 0.4026;
+                half w0a = 0.0545;
+                half w0b =  0.0545;
+                half w1a =  0.2442;
+                half w1b =  0.2442;
+
+
+                half4 result = w * col;
+                result += w0a * col0a;
+                result += w0b * col0b;
+                result += w1a * col1a;
+                result += w1b * col1b;
+
+                result = result / (w + w0a + w0b + w1a + w1b);
+                return float4(result.rgb, result.a);
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "VF_FinalBlur"
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment FinalFrag
+
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+
+            TEXTURE2D(_VolumeFogRT);
+            SAMPLER(sampler_VolumeFogRT);
+            TEXTURE2D(_CameraTexture);
+            SAMPLER(sampler_CameraTexture);
+            
+            float4 FinalFrag(v2f i) : SV_Target
+            {
+                float2 uv = i.uv;
+
+                float4 camColor = SAMPLE_TEXTURE2D(_CameraTexture, sampler_CameraTexture, uv);
+                float4 volumeColor = SAMPLE_TEXTURE2D(_VolumeFogRT, sampler_VolumeFogRT, uv);
+                
+                //return ao;
+                float4 finalCol = camColor;
+                //finalCol = float4(0.2,1,0.2,1)*camColor;
+                finalCol.rgb = lerp( volumeColor,finalCol.rgb, volumeColor.a);
+                return finalCol;
             }
             ENDHLSL
         }

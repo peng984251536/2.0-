@@ -201,7 +201,7 @@
                 //云整体形状，防止重复度太高
                 float2 shape2ScalePos = uvw.xz * _shape2Scale.xz + _shape2Offset.xz * offsetSpeed;
                 float modelNoise = SAMPLE_TEXTURE2D(_shape2NoiseTex, sampler_shape2NoiseTex, shape2ScalePos).b;
-                modelNoise = 1-smoothstep(_smoothMin2, _smoothMax2, modelNoise);
+                modelNoise = 1 - smoothstep(_smoothMin2, _smoothMax2, modelNoise);
                 baseShapeDensity = modelNoise * baseShapeDensity;
                 //return modelNoise;
                 //return baseShapeDensity;
@@ -236,33 +236,33 @@
 
             // Calculate proportion of light that reaches the given point from the lightsource
             //光线衰减函数
-            float lightmarch(float3 position)
-            {
-                //return position.y;
-                float3 dirToLight = normalize(_MainLightPosition.xyz);
-                float dstInsideBox = rayBoxDst(_boundsMin, _boundsMax,
-                    position, 1 / dirToLight).y;
-
-                numStepsLight = min(numStepsLight, 5);
-                float num = (numStepsLight+1)*numStepsLight*0.5;
-                float stepSizeOne = dstInsideBox/num;
-                float stepSize = stepSizeOne;
-                float totalDensity = 0;
-
-                //return  sampleDensity(position);
-
-                //[unroll(10)]
-                 for (int step = 0; step < numStepsLight; step ++)
-                 {
-                     position += dirToLight * stepSize;
-                     totalDensity += max(0, sampleDensity(position) * stepSize);
-                     stepSize += stepSizeOne; 
-                 }
-
-                float transmittance = exp(-totalDensity * lightAbsorptionTowardSun);
-                return transmittance;
-                return darknessThreshold + transmittance * (1 - darknessThreshold);
-            }
+            // float lightmarch(float3 position)
+            // {
+            //     //return position.y;
+            //     float3 lighdirToLight = normalize(_MainLightPosition.xyz);
+            //     float lighdstInsideBox = rayBoxDst(_boundsMin, _boundsMax,
+            //         position, 1 / lighdirToLight).y;
+            //
+            //     numStepsLight = min(numStepsLight, 5);
+            //     float num = (numStepsLight+1)*numStepsLight*0.5;
+            //     float stepSizeOne = lighdstInsideBox/num;
+            //     float stepSize = stepSizeOne;
+            //     float totalDensity = 0;
+            //
+            //     //return  sampleDensity(position);
+            //
+            //     //[unroll(10)]
+            //      for (int step = 0; step < numStepsLight; step ++)
+            //      {
+            //          position += lighdirToLight * stepSize;
+            //          totalDensity += max(0, sampleDensity(position) * stepSize);
+            //          stepSize += stepSizeOne; 
+            //      }
+            //
+            //     float transmittance = exp(-totalDensity * lightAbsorptionTowardSun);
+            //     return transmittance;
+            //     return darknessThreshold + transmittance * (1 - darknessThreshold);
+            // }
 
             v2f vert(appdata v)
             {
@@ -281,7 +281,7 @@
                 //float4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 float2 screenUV = (i.vertex.xy / _ScreenParams.xy);
                 float3 baseColor = SAMPLE_TEXTURE2D(_CameraOpaqueTexture,
-                                                    sampler_CameraOpaqueTexture, screenUV).r;
+                                                    sampler_CameraOpaqueTexture, screenUV).rgb;
                 i.viewDir = normalize(i.posWS - _WorldSpaceCameraPos.xyz);
                 //return float4( i.viewDir,1);
 
@@ -302,14 +302,14 @@
                 randomOffset = _rayOffsetStrength * (randomOffset * 0.7 + 0.3);
                 float dstTravelled = randomOffset;
                 float dstLimit = min(i.vertex.w - dstToBox, dstInsideBox); //步近最远距离
-                dstLimit = max(1,dstInsideBox) ;
+                dstLimit = max(1, dstInsideBox);
                 float3 rayPos = _WorldSpaceCameraPos.xyz;
                 float3 entryPoint = rayPos + normalize(i.viewDir) * dstToBox; //开始位置
 
 
                 // March through volume:
                 float transmittance = 1;
-                float lightEnergy = 0;
+                float3 lightEnergy = 0;
                 float stepSize = _timeScale;
 
 
@@ -334,10 +334,10 @@
                 // return lightTransmittance;
 
 
-                //[unroll(80)]
+                [unroll(50)]
                 for (int n = 0; dstLimit > dstTravelled; n++)
                 {
-                    if(n>=80)
+                    if (n >= 80)
                         break;
 
                     rayPos = entryPoint + i.viewDir * (dstTravelled);
@@ -347,8 +347,29 @@
 
                     if (density > 0)
                     {
-                        float lightTransmittance = lightmarch(rayPos);
+                        //光线函数
+                        //return position.y;
+                        float3 dirToLight = normalize(_MainLightPosition.xyz);
+                        float dstInsideBox = rayBoxDst(_boundsMin, _boundsMax,
+                                                       rayPos, 1 / dirToLight).y;
+                        numStepsLight = min(numStepsLight, 4);
+                        float num = (numStepsLight + 1) * numStepsLight * 0.5;
+                        float stepSizeOne = dstInsideBox / num;
+                        float stepSize = stepSizeOne;
+                        float totalDensity = 0;
+                        float3 lightPos = rayPos;
+                        for (int step = 0; step < numStepsLight; step ++)
+                        {
+                            lightPos += dirToLight * stepSize;
+                            totalDensity += max(0, sampleDensity(lightPos) * stepSize);
+                            stepSize += stepSizeOne;
+                        }
+                        float lightTransmittance = exp(-totalDensity * lightAbsorptionTowardSun);
+                        //return transmittance;
+                        //return darknessThreshold + transmittance * (1 - darknessThreshold);
                         lightEnergy += lightTransmittance;
+
+                        //云密度计算
                         //lightEnergy += density * stepSize * transmittance * lightTransmittance * phaseVal;
                         //transmittance *= exp(-density * stepSize * lightAbsorptionThroughCloud);
                         transmittance *= exp(-density * stepSize);
@@ -362,14 +383,23 @@
                     }
                     dstTravelled += stepSize;
                 }
+                lightEnergy = lightEnergy * lightMarchScale * _MainLightColor.rgb;
 
-                float3 finalColor = transmittance*baseColor.rgb + lightEnergy * lightMarchScale;
-                return lightEnergy * lightMarchScale;
+                
+                //环境光
+                half3 ambient_GI = SampleSH(float3(0,1,0)); //环境光
+                float3 ambientLight = ambient_GI*(1-transmittance)*darknessThreshold;
+                return float4(ambient_GI*darknessThreshold,1) ;
+
+                
+                float3 finalColor = lerp(lightEnergy,baseColor.rgb,transmittance);//
+                //return lightEnergy * lightMarchScale;
                 //return transmittance;
                 //return transmittance* + lightEnergy * lightMarchScale;
                 //transmittance = smoothstep(0, 1, transmittance);
                 //return float4(0, 0, 0, 1 - transmittance);
-                return float4(finalColor,1);
+                //return float4(ambient_GI, 1);
+                return float4(finalColor+ambientLight, 1);
                 //return float4(transmittance.rgb, 0.9);
             }
             ENDHLSL
