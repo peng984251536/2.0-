@@ -1,0 +1,280 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7778526176993040040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e485d9102696e634da42fe9bc95bddce, type: 3}
+  m_Name: SSRFrature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  ssr_mat: {fileID: 2100000, guid: d9bbf6d10682b5d47b15dda17ef29a99, type: 2}
+  _RayMarchSettings:
+    _downsampleDivider: 1
+    _NoiseTex: {fileID: 2800000, guid: 3ce5e6bf9b47aa345bde80b0544d8a14, type: 3}
+    _NoiseSize: {x: 2, y: 1}
+    _BRDFBias: 0.856
+    _EdgeFactor: 0.21
+    _rayStepNum: 70
+    _rayStepScale: 0.24
+    _thickness: -0.72
+    IsImportanceSampling: 1
+    IsMulitSampling: 1
+    IsPatioFilter: 1
+    BRDF_SSR: 0
+  _temporalMgr:
+    haltons:
+    - {x: 0, y: 0}
+    - {x: 0.5, y: 0.33333334}
+    - {x: 0.25, y: 0.6666667}
+    - {x: 0.75, y: 0.11111111}
+    - {x: 0.125, y: 0.44444445}
+    - {x: 0.625, y: 0.7777778}
+    - {x: 0.375, y: 0.22222222}
+    - {x: 0.875, y: 0.5555556}
+    - {x: 0.0625, y: 0.8888889}
+    - {x: 0.5625, y: 0.037037037}
+    - {x: 0.3125, y: 0.3703704}
+    - {x: 0.8125, y: 0.7037037}
+    - {x: 0.1875, y: 0.14814815}
+    - {x: 0.6875, y: 0.4814815}
+    - {x: 0.4375, y: 0.8148148}
+    - {x: 0.9375, y: 0.25925925}
+    - {x: 0.03125, y: 0.5925926}
+    - {x: 0.53125, y: 0.9259259}
+    - {x: 0.28125, y: 0.074074075}
+    - {x: 0.78125, y: 0.4074074}
+    - {x: 0.15625, y: 0.7407408}
+    - {x: 0.65625, y: 0.1851852}
+    - {x: 0.40625, y: 0.5185185}
+    - {x: 0.90625, y: 0.8518519}
+    - {x: 0.09375, y: 0.2962963}
+    - {x: 0.59375, y: 0.6296297}
+    - {x: 0.34375, y: 0.962963}
+    - {x: 0.84375, y: 0.012345679}
+    - {x: 0.21875, y: 0.34567901}
+    - {x: 0.71875, y: 0.67901236}
+    - {x: 0.46875, y: 0.12345679}
+    - {x: 0.96875, y: 0.45679012}
+    - {x: 0.015625, y: 0.79012346}
+    - {x: 0.515625, y: 0.23456791}
+    - {x: 0.265625, y: 0.56790125}
+    - {x: 0.765625, y: 0.90123457}
+    - {x: 0.140625, y: 0.049382716}
+    - {x: 0.640625, y: 0.38271606}
+    - {x: 0.390625, y: 0.7160494}
+    - {x: 0.890625, y: 0.16049382}
+    - {x: 0.078125, y: 0.49382716}
+    - {x: 0.578125, y: 0.8271605}
+    - {x: 0.328125, y: 0.27160493}
+    - {x: 0.828125, y: 0.60493827}
+    - {x: 0.203125, y: 0.9382716}
+    - {x: 0.703125, y: 0.086419754}
+    - {x: 0.453125, y: 0.41975307}
+    - {x: 0.953125, y: 0.75308645}
+    - {x: 0.046875, y: 0.19753087}
+    - {x: 0.546875, y: 0.5308642}
+    - {x: 0.296875, y: 0.86419755}
+    - {x: 0.796875, y: 0.30864197}
+    - {x: 0.171875, y: 0.64197534}
+    - {x: 0.671875, y: 0.97530866}
+    - {x: 0.421875, y: 0.024691358}
+    - {x: 0.921875, y: 0.35802472}
+    - {x: 0.109375, y: 0.69135803}
+    - {x: 0.609375, y: 0.13580248}
+    - {x: 0.359375, y: 0.46913582}
+    - {x: 0.859375, y: 0.80246913}
+    - {x: 0.234375, y: 0.24691358}
+    - {x: 0.734375, y: 0.5802469}
+    - {x: 0.484375, y: 0.91358024}
+    - {x: 0.984375, y: 0.061728396}
+    haltonScale: 1
+    TScale: 8
+    TResponse: 0.916
+    IsUpdate: 0
+  DebugParams: {x: 1, y: 0, z: 0.5, w: 0.5}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
+  m_Name: Other_Renderer
+  m_EditorClassIdentifier: 
+  debugShaders:
+    debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
+  m_RendererFeatures:
+  - {fileID: 8703295106005286754}
+  - {fileID: -7778526176993040040}
+  m_RendererFeatureMap: 623fd770c950c87858a94088a71f0d94
+  m_UseNativeRenderPass: 0
+  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
+  shaders:
+    blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
+    copyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+    screenSpaceShadowPS: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
+    samplingPS: {fileID: 4800000, guid: 04c410c9937594faa893a11dceb85f7e, type: 3}
+    stencilDeferredPS: {fileID: 4800000, guid: e9155b26e1bc55942a41e518703fe304, type: 3}
+    fallbackErrorPS: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
+    materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
+    coreBlitPS: {fileID: 4800000, guid: 93446b5c5339d4f00b85c159e1159b7c, type: 3}
+    coreBlitColorAndDepthPS: {fileID: 4800000, guid: d104b2fc1ca6445babb8e90b0758136b, type: 3}
+    cameraMotionVector: {fileID: 4800000, guid: c56b7e0d4c7cb484e959caeeedae9bbf, type: 3}
+    objectMotionVector: {fileID: 4800000, guid: 7b3ede40266cd49a395def176e1bc486, type: 3}
+  m_AssetVersion: 2
+  m_OpaqueLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_TransparentLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_DefaultStencilState:
+    overrideStencilState: 0
+    stencilReference: 0
+    stencilCompareFunction: 8
+    passOperation: 2
+    failOperation: 0
+    zFailOperation: 0
+  m_ShadowTransparentReceive: 0
+  m_RenderingMode: 1
+  m_DepthPrimingMode: 0
+  m_CopyDepthMode: 0
+  m_AccurateGbufferNormals: 0
+  m_ClusteredRendering: 0
+  m_TileSize: 32
+  m_IntermediateTextureMode: 1
+--- !u!114 &8703295106005286754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056a2777be2e4cc797fd982ac02bd532, type: 3}
+  m_Name: VolumeFogFrature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  volemeFog: {fileID: 2100000, guid: b4cbb4e395dd8c442aed2d715f79536a, type: 2}
+  downsampleDivider: 1
+  _shapeSettings:
+    _shapeScale: {x: 3, y: 5.6, z: 3.5}
+    _shapeOffset: {x: 2, y: 1, z: 2}
+    _shapeNoiseWeights: {x: 3, y: 1, z: 2, w: 0}
+  _noiseSettings:
+    VolemeFog_Shader: {fileID: 4800000, guid: 4d69ce0c4ccf439cac8ef1ebded28bae, type: 3}
+    noiseTex: {fileID: 11700000, guid: 763d8cdff20d66b4db609e17ebf98ee9, type: 2}
+    blueNoiseTex: {fileID: 2800000, guid: 3ce5e6bf9b47aa345bde80b0544d8a14, type: 3}
+    blueSize: 1
+    rayOffsetStrength: 0.7
+    bounds: {fileID: 0}
+    _RayStepScale: 12
+    _RayStepNum: 20
+    _baseSpeed: 1
+    _smoothMin: 0.12
+    _smoothMax: 0.9
+    _noiseModelVal: {x: 0, y: 1}
+  _DetailSettings:
+    _DetailNoiseTex: {fileID: 11700000, guid: d751898311928814f9a845c309849ac4, type: 2}
+    _detailNoiseScale: {x: 12, y: 15, z: 9}
+    _detailOffset: {x: 1, y: 0, z: 1}
+    _detailSpeed: 1
+    _smoothVal: {x: -1.45, y: 0.88}
+  _Shape2Settings:
+    _shape2NoiseTex: {fileID: 2800000, guid: 95c125eb6cdc13647bbb88c4c684b6f9, type: 2}
+    _shape2Scale: {x: 1.12, y: 3, z: 1.19}
+    _shape2Offset: {x: 1.18, y: 1, z: 1}
+    _smoothMin2: 0.22
+    _smoothMax2: 0.88
+  _LightMarchSettings:
+    _numStepsLight: 4
+    _lightAbsorptionTowardSun: 0.77
+    _darknessThreshold: 1
+    _lightMarchScale: 0.25
+    _lightMarchStep: 2
+    _phaseParams: {x: 0.7, y: 0.83, z: 1.15, w: 4.13}
+  _bilateralParams: {x: 0.5, y: 0.5, z: 1, w: 1}
+  windDir: {x: 1, y: 1, z: 1}
+  windSpeed: {x: 3, y: 0.2, z: 2.5}
+  _timeScale: 1
+  _temporalMgr:
+    haltons:
+    - {x: 0, y: 0}
+    - {x: 0.5, y: 0.33333334}
+    - {x: 0.25, y: 0.6666667}
+    - {x: 0.75, y: 0.11111111}
+    - {x: 0.125, y: 0.44444445}
+    - {x: 0.625, y: 0.7777778}
+    - {x: 0.375, y: 0.22222222}
+    - {x: 0.875, y: 0.5555556}
+    - {x: 0.0625, y: 0.8888889}
+    - {x: 0.5625, y: 0.037037037}
+    - {x: 0.3125, y: 0.3703704}
+    - {x: 0.8125, y: 0.7037037}
+    - {x: 0.1875, y: 0.14814815}
+    - {x: 0.6875, y: 0.4814815}
+    - {x: 0.4375, y: 0.8148148}
+    - {x: 0.9375, y: 0.25925925}
+    - {x: 0.03125, y: 0.5925926}
+    - {x: 0.53125, y: 0.9259259}
+    - {x: 0.28125, y: 0.074074075}
+    - {x: 0.78125, y: 0.4074074}
+    - {x: 0.15625, y: 0.7407408}
+    - {x: 0.65625, y: 0.1851852}
+    - {x: 0.40625, y: 0.5185185}
+    - {x: 0.90625, y: 0.8518519}
+    - {x: 0.09375, y: 0.2962963}
+    - {x: 0.59375, y: 0.6296297}
+    - {x: 0.34375, y: 0.962963}
+    - {x: 0.84375, y: 0.012345679}
+    - {x: 0.21875, y: 0.34567901}
+    - {x: 0.71875, y: 0.67901236}
+    - {x: 0.46875, y: 0.12345679}
+    - {x: 0.96875, y: 0.45679012}
+    - {x: 0.015625, y: 0.79012346}
+    - {x: 0.515625, y: 0.23456791}
+    - {x: 0.265625, y: 0.56790125}
+    - {x: 0.765625, y: 0.90123457}
+    - {x: 0.140625, y: 0.049382716}
+    - {x: 0.640625, y: 0.38271606}
+    - {x: 0.390625, y: 0.7160494}
+    - {x: 0.890625, y: 0.16049382}
+    - {x: 0.078125, y: 0.49382716}
+    - {x: 0.578125, y: 0.8271605}
+    - {x: 0.328125, y: 0.27160493}
+    - {x: 0.828125, y: 0.60493827}
+    - {x: 0.203125, y: 0.9382716}
+    - {x: 0.703125, y: 0.086419754}
+    - {x: 0.453125, y: 0.41975307}
+    - {x: 0.953125, y: 0.75308645}
+    - {x: 0.046875, y: 0.19753087}
+    - {x: 0.546875, y: 0.5308642}
+    - {x: 0.296875, y: 0.86419755}
+    - {x: 0.796875, y: 0.30864197}
+    - {x: 0.171875, y: 0.64197534}
+    - {x: 0.671875, y: 0.97530866}
+    - {x: 0.421875, y: 0.024691358}
+    - {x: 0.921875, y: 0.35802472}
+    - {x: 0.109375, y: 0.69135803}
+    - {x: 0.609375, y: 0.13580248}
+    - {x: 0.359375, y: 0.46913582}
+    - {x: 0.859375, y: 0.80246913}
+    - {x: 0.234375, y: 0.24691358}
+    - {x: 0.734375, y: 0.5802469}
+    - {x: 0.484375, y: 0.91358024}
+    - {x: 0.984375, y: 0.061728396}
+    haltonScale: 1
+    TScale: 1
+    TResponse: 0.878
+    IsUpdate: 0
