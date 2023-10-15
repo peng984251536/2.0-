@@ -19,6 +19,8 @@
     
     float4 _phaseParams;
     float4x4 _VPMatrix_invers;
+    float2 _haltonVector2;
+    float _haltonScale;
     // float _BilaterFilterFactor; //法线判定的插值
     // float2 _BlurRadius; //滤波的采样范围
     float4 _bilateralParams; //x:BlurRadius.x||y:BlurRadius.y||z:BilaterFilterFactor
@@ -136,6 +138,8 @@
             //half4 _BaseColor;
 
             //shapeParams
+            float4 _CameraTexture_TexelSize;
+            float4 _blueNoiseTex_TexelSize;
             float3 _shapeScale;
             float3 _shapeOffset;
             float4 _shapeNoiseWeights;
@@ -145,6 +149,7 @@
             float3 _boundsMax;
             float _rayOffsetStrength;
             float _RayStepScale;
+            float _RayStepNum;
             float _baseSpeed;
             float _smoothMin;
             float _smoothMax;
@@ -295,17 +300,23 @@
                 float dstInsideBox = rayToContainerInfo.y;
                 dstInsideBox = min(dstInsideBox,depth);
                 dstToBox =  min(dstToBox,depth);
-                //return depth-_timeScale;
+                float jitter_Scale = dstToBox/(dstToBox+dstInsideBox) ;
 
                 float3 rayPos = _WorldSpaceCameraPos.xyz;
                 //return dstToBox - _timeScale;
                 float3 entryPoint = rayPos + normalize(viewDir) * dstToBox; //开始位置
 
-                // 
-                float randomOffset = SAMPLE_TEXTURE2D(_blueNoiseTex, sampler_blueNoiseTex, screenUV*_blueSize).r;
-                randomOffset = _rayOffsetStrength * (randomOffset);
-                //return randomOffset;
-                float dstTravelled = randomOffset;
+                //扰动
+                //之前的扰动是错误的
+                float2 jitter_uv = float2((screenUV + _haltonVector2*_haltonScale) *
+                    _CameraTexture_TexelSize.zw/_blueSize / _blueNoiseTex_TexelSize.zw);
+                float2 randomOffset = SAMPLE_TEXTURE2D(_blueNoiseTex, sampler_blueNoiseTex,
+                    jitter_uv).rg*2-1;
+                //return float4(randomOffset.r*0.5+0.5,0,0,0);
+                randomOffset = _rayOffsetStrength * (randomOffset.r);
+                // float3 testColor = randomOffset;
+                // return float4(testColor,0) ;
+                float dstTravelled = randomOffset*_RayStepScale;
                 //float dstLimit = min(i.vertex.w - dstToBox, dstInsideBox); //步近最远距离
                 float dstLimit = max(3, dstInsideBox);
 
@@ -339,16 +350,20 @@
                 //return (dstTravelled-dstLimit)+_baseSpeed;
                 //stepSize = dstLimit/stepSize;
 
-                //光线衰减
+                //光线衰减测试
                 // float lightTransmittance =
                 //     lightmarch(entryPoint + i.viewDir * (dstTravelled));
                 // return lightTransmittance;
+                // rayPos = entryPoint + viewDir * (dstTravelled);
+                // float density = sampleDensity(rayPos);
+                // return density;
+                //return float4(entryPoint, 1);
 
 
-                [unroll(30)]
+                [unroll(20)]
                 for (int n = 0; dstLimit > dstTravelled; n++)
                 {
-                    if (n >= 80)
+                    if (n >= 20)
                         break;
 
                     rayPos = entryPoint + viewDir * (dstTravelled);
@@ -402,6 +417,7 @@
                 half3 ambient_GI = SampleSH(float3(0, 1, 0)); //环境光
                 ambient_GI = _GlossyEnvironmentColor ;
                 float3 ambientLight = ambient_GI * (1 - transmittance) * darknessThreshold;
+                //ambientLight = ambientLight * ((Luminance(lightEnergy)));
                 //return float4(ambient_GI,1-transmittance);
                 //return float4(ambientLight,1);
 
@@ -553,6 +569,7 @@
             ENDHLSL
         }
 
+        //pass 3
         Pass
         {
             Name "VF_FinalBlur"
@@ -579,6 +596,33 @@
                 float4 finalCol = camColor;
                 //finalCol = float4(0.2,1,0.2,1)*camColor;
                 finalCol.rgb = lerp( volumeColor,finalCol.rgb, volumeColor.a);
+                return finalCol;
+            }
+            ENDHLSL
+        }
+        
+        //pass 4
+        //VF_temporal
+        Pass
+        {
+            Name "VF_temporal"
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment TemporalFrag
+
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+            #include "VFTemporal.hlsl"
+            
+            // TEXTURE2D(_CameraTexture);
+            // SAMPLER(sampler_CameraTexture);
+            
+            float4 TemporalFrag(v2f i) : SV_Target
+            {
+                float2 uv = i.uv;
+                
+                
+                float4 finalCol = temporal(uv);
                 return finalCol;
             }
             ENDHLSL
