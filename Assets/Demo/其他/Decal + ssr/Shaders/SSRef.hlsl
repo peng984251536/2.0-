@@ -4,8 +4,8 @@
 #pragma multi_compile_local _ _PATIO_FILTER
 
 
-TEXTURE2D (_MyBaseMap);
-SAMPLER (sampler_MyBaseMap);
+// TEXTURE2D (_MyBaseMap);
+// SAMPLER (sampler_MyBaseMap);
 TEXTURE2D(_CameraTexture);
 SAMPLER(sampler_CameraTexture);
 TEXTURE2D (_NoiseTex);
@@ -115,7 +115,7 @@ float4 resolve(v2f i) : SV_Target
 
     //-----控制是否开启BRDF-----//
     float _UseNormalization = 1;
-    float _Fireflies = 1;
+    //float _Fireflies = 1;
     
 
     
@@ -200,22 +200,24 @@ float4 resolve(v2f i) : SV_Target
         float mip = clamp(mipVal, 0.0, maxMipLevel);
         float4 sampleColor = float4(0.0, 0.0, 0.0, 0.0);
         //采样摄像机的图像
-        sampleColor.rgb = saturate(_CameraTexture.SampleLevel(sampler_CameraTexture,hitUv,mip).rgb-0.9);
+        sampleColor.rgb = saturate(_CameraTexture.SampleLevel(sampler_CameraTexture,hitUv,mip).rgb);
         //return mip - _DebugParams.y;
-        sampleColor.rgb += _MyBaseMap.SampleLevel(sampler_MyBaseMap,hitUv,mip).rgb;
+        //sampleColor.rgb += _MyBaseMap.SampleLevel(sampler_MyBaseMap,hitUv,mip).rgb;
         sampleColor.a = RayAttenBorder(hitUv, _EdgeFactor) * hitMask;
 
-        if (_Fireflies == 1)
-            sampleColor.rgb /= 1 + Luminance(sampleColor.rgb);
+        // if (_Fireflies == 1)
+        //     sampleColor.rgb /= 1 + Luminance(sampleColor.rgb);
 
         result += sampleColor * weight;
         weightSum += weight;
     }
     result /= weightSum;
 
+    // if (_Fireflies == 1)
+    //     result.rgb /= 1 - Luminance(result.rgb);
     if (_Fireflies == 1)
-        result.rgb /= 1 - Luminance(result.rgb);
+        result.rgb = ToneMapping(result);
 
-    return max(1e-5, result);
+    return  result;
 }
 

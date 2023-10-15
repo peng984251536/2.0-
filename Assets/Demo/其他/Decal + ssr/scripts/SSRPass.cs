@@ -11,13 +11,14 @@ using UnityEngine.Scripting.APIUpdating;
 public class SSRPass : ScriptableRenderPass
 {
     public Material ssrefMat;
-    public float downsampleDivider;   
-    
+    public float downsampleDivider;
+    public RenderTargetHandle copy_iblTex;  
+        
     private string m_ProfilerTag;
     private RenderTextureDescriptor m_Descriptor;
     private TemporalMgr _temporalMgr;
     
-    //RT
+
     private RenderTargetHandle m_SSRefRT;
     private RenderTargetHandle m_SSRayCast;
     private RenderTargetHandle m_SSRayCastMask;
@@ -35,8 +36,8 @@ public class SSRPass : ScriptableRenderPass
         profilingSampler = new ProfilingSampler(m_ProfilerTag);
         this.ssrefMat = material;
         
-        renderPassEvent = RenderPassEvent.BeforeRenderingDeferredLights;
-        //renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+        //renderPassEvent = RenderPassEvent.BeforeRenderingDeferredLights;
+        renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         _temporalMgr = temporalMgr;
     }
     
@@ -60,7 +61,7 @@ public class SSRPass : ScriptableRenderPass
         m_Descriptor = renderingData.cameraData.cameraTargetDescriptor;
         m_Descriptor.msaaSamples = 1;
         m_Descriptor.depthBufferBits = 0;
-        m_Descriptor.colorFormat = RenderTextureFormat.DefaultHDR;
+        m_Descriptor.colorFormat = RenderTextureFormat.ARGB32;
         m_Descriptor.width = (int)(m_Descriptor.width/ downsampleDivider) ;
         m_Descriptor.height = (int)(m_Descriptor.height/downsampleDivider);
         _temporalMgr.OnCameraSetup(cmd,ref renderingData,m_Descriptor);
@@ -100,9 +101,9 @@ public class SSRPass : ScriptableRenderPass
         {
             //搞不懂摄像机的id为啥非得拷贝一份才有用
             RenderTargetHandle rt = new RenderTargetHandle();
-            rt.Init("_MyIBLTex");
-            RenderTargetHandle rt2 = new RenderTargetHandle();
-            rt2.Init("_MyBaseMap");
+            rt.Init("_CamTex");
+            // RenderTargetHandle rt2 = new RenderTargetHandle();
+            // rt2.Init("_MyBaseMap");
             RenderTextureDescriptor baseDescriptor = renderingData.cameraData.cameraTargetDescriptor;
             baseDescriptor.useMipMap = true;
             baseDescriptor.autoGenerateMips = true;
@@ -111,11 +112,11 @@ public class SSRPass : ScriptableRenderPass
             baseDescriptor.msaaSamples = 1;
             baseDescriptor.colorFormat = RenderTextureFormat.DefaultHDR;
             cmd.GetTemporaryRT(rt.id,baseDescriptor , FilterMode.Bilinear);
-            cmd.GetTemporaryRT(rt2.id,baseDescriptor , FilterMode.Bilinear);
+            //cmd.GetTemporaryRT(rt2.id,baseDescriptor , FilterMode.Bilinear);
             cmd.Blit(camerRT,rt.Identifier());
-            cmd.Blit("_GBuffer0",rt2.Identifier());
+            //cmd.Blit("_GBuffer0",rt2.Identifier());
             cmd.SetGlobalTexture("_CameraTexture",rt.Identifier());
-            cmd.SetGlobalTexture("_MyBaseMap",rt2.Identifier());
+            //cmd.SetGlobalTexture("_MyBaseMap",rt2.Identifier());
             
             //------做光线步进计算SSR
             //------架子GB的法线贴图

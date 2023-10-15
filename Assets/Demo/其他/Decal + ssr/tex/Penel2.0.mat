@@ -43,11 +43,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Merallic: 0.454
-    - _NormalScale: 0.525
+    - _Merallic: 0.101
+    - _NormalScale: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.469
+    - _Smoothness: 0.199
     - _TestScale: 4.45
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

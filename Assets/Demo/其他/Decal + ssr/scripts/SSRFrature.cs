@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Serialization;
 
@@ -20,10 +21,8 @@ public class SSRFrature : ScriptableRendererFeature
         public Texture2D _NoiseTex;
         public Vector2 _NoiseSize = new Vector2(1, 1);
 
-        [Range(0,1)]
-        public float _BRDFBias = 0.7f;
-        [Range(0.0f, 1.0f)]
-        public float _EdgeFactor = 0.25f;
+        [Range(0, 1)] public float _BRDFBias = 0.7f;
+        [Range(0.0f, 1.0f)] public float _EdgeFactor = 0.25f;
         public int _rayStepNum = 10;
         public float _rayStepScale = 1.0f;
         public float _thickness = 0.1f;
@@ -31,6 +30,7 @@ public class SSRFrature : ScriptableRendererFeature
         public bool IsMulitSampling = true;
         public bool IsPatioFilter = true;
         public bool BRDF_SSR = true;
+        public bool Fireflies = true;
     }
 
 
@@ -39,14 +39,15 @@ public class SSRFrature : ScriptableRendererFeature
     private const string k_IsMulitSampling = "_MULIT_SAMPLING";
     private const string k_IsPatioFilter = "_PATIO_FILTER";
     private const string k_BRDFSSR = "_BRDFSSR";
-    
+    private CopyColorPass copyColorPass;
+    private RenderTargetHandle Ibl_RTHandle;
+
     public Material ssr_mat;
     public rayMarchSettings _RayMarchSettings = new rayMarchSettings();
     public TemporalMgr _temporalMgr = new TemporalMgr();
     public Vector4 DebugParams = Vector4.zero;
 
     //[Header("--------------")] 
-    
 
 
     public override void Create()
@@ -64,18 +65,35 @@ public class SSRFrature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        CameraData cameraData = renderingData.cameraData;
+        if(cameraData.isSceneViewCamera)
+            return;
         if (pass == null)
             return;
+        if (copyColorPass == null)
+        {
+            copyColorPass = new CopyColorPass(RenderPassEvent.AfterRenderingGbuffer,
+                ssr_mat);
+        }
+        if (Ibl_RTHandle.id==0)
+        {
+            Ibl_RTHandle = new RenderTargetHandle();
+            Ibl_RTHandle.Init( "_CopyIBLTex");
+        }
+        copyColorPass.Setup(renderer.cameraColorTarget,
+            Ibl_RTHandle, Downsampling.None);
+        renderer.EnqueuePass(copyColorPass);
         renderer.EnqueuePass(pass);
         pass.downsampleDivider = _RayMarchSettings._downsampleDivider;
+        pass.copy_iblTex = Ibl_RTHandle;
 
         if (ssr_mat == null)
             return;
-        ssr_mat.SetFloat("_BRDFBias",_RayMarchSettings._BRDFBias);
-        ssr_mat.SetFloat("_EdgeFactor",_RayMarchSettings._EdgeFactor);
-        ssr_mat.SetTexture("_NoiseTex",_RayMarchSettings._NoiseTex);
-        ssr_mat.SetVector("_NoiseSize",_RayMarchSettings._NoiseSize);
-        ssr_mat.SetFloat("_downsampleDivider",_RayMarchSettings._downsampleDivider);
+        ssr_mat.SetFloat("_BRDFBias", _RayMarchSettings._BRDFBias);
+        ssr_mat.SetFloat("_EdgeFactor", _RayMarchSettings._EdgeFactor);
+        ssr_mat.SetTexture("_NoiseTex", _RayMarchSettings._NoiseTex);
+        ssr_mat.SetVector("_NoiseSize", _RayMarchSettings._NoiseSize);
+        ssr_mat.SetFloat("_downsampleDivider", _RayMarchSettings._downsampleDivider);
 
 
         Vector4 rayParams = new Vector4
@@ -93,9 +111,11 @@ public class SSRFrature : ScriptableRendererFeature
             _temporalMgr.GetHaltonVector2().x,
             _temporalMgr.GetHaltonVector2().y
         );
-        ssr_mat.SetVector("_JitterSizeAndOffset",jitterParams);
-        ssr_mat.SetVector("_DebugParams",DebugParams);
-        
+        ssr_mat.SetVector("_JitterSizeAndOffset", jitterParams);
+        ssr_mat.SetVector("_DebugParams", DebugParams);
+
+        float _Fireflies = _RayMarchSettings.Fireflies ? 1 : 0;
+        ssr_mat.SetFloat("_Fireflies", _Fireflies);
         CoreUtils.SetKeyword(ssr_mat, k_IsImportanceSampling,
             _RayMarchSettings.IsImportanceSampling);
         CoreUtils.SetKeyword(ssr_mat, k_IsMulitSampling,

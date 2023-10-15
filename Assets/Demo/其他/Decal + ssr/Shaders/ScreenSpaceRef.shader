@@ -12,6 +12,8 @@
     SAMPLER(sampler_CameraDepthTexture);
     TEXTURE2D(_GBuffer2);//法线
     SAMPLER(sampler_GBuffer2);
+    TEXTURE2D(_CopyIBLTex);//法线
+    SAMPLER(sampler_CopyIBLTex);
 
     float4 _phaseParams;
     float4  _DebugParams;
@@ -20,6 +22,7 @@
     float4x4 _VMatrix_invers;
     float2 _haltonVector2;
     float _haltonScale;
+    float _Fireflies;
     // float _BilaterFilterFactor; //法线判定的插值
     // float2 _BlurRadius; //滤波的采样范围
     float4 _bilateralParams; //x:BlurRadius.x||y:BlurRadius.y||z:BilaterFilterFactor
@@ -62,6 +65,38 @@
         posWS /= posWS.w;
         return posWS.xyz;
     }
+
+    float3 ToneMapping(float3 x)
+    {
+        // float a = 2.51f;
+        // float b = 0.03f;
+        // float c = 2.43f;
+        // float d = 0.59f;
+        // float e = 0.14f;
+        // return saturate((x*(a*x + b))/(x*(c*x + d)+e));
+        float3 color = x/(x+1);
+        return saturate(color);
+    }
+    
+    //逆色调映射
+    float3 InverseToneMapping(float3 y)
+    {
+        float3 color = 1*y/(1-y);
+        return max(color,0);
+        // float a = 2.51f;
+        // float b = 0.03f;
+        // float c = 2.43f;
+        // float d = 0.59f;
+        // float e = 0.14f;
+        //
+        // float discriminant = (y*d-b)*(y*d-b) - 4.0f*(y*c-a)*(-y*e);
+        // float sqrtDiscriminant = sqrt(discriminant);
+        //
+        // float x1 = (-1.0f*(y*d-b) + sqrtDiscriminant) / (2.0f*(y*c-a));
+        // float x2 = (-1.0f*(y*d-b) - sqrtDiscriminant) / (2.0f*(y*c-a));
+        //
+        // return float3(x1, x2, 0.0f);
+    }   
     ENDHLSL
 
     Subshader
@@ -227,9 +262,16 @@
                 float2 uv = i.uv;
 
                 float4 ssrColor = SAMPLE_TEXTURE2D(_SSRayColor, sampler_SSRayColor, uv);
+                if (_Fireflies == 1)
+                {
+                    ssrColor.rgb = InverseToneMapping(ssrColor.rgb);                        
+                }
+                //return float4(ssrColor.rgb*ssrColor.a,1);
+
                 //float4 albedoMap = SAMPLE_TEXTURE2D(_GBuffer0, sampler_GBuffer0, uv);
+                float4 baseColor = SAMPLE_TEXTURE2D(_CameraTexture, sampler_CameraTexture, uv);
                 float4 NormalMap = SAMPLE_TEXTURE2D(_GBuffer2, sampler_GBuffer2, uv);
-                float4 cubeMap = SAMPLE_TEXTURE2D(_CameraTexture, sampler_CameraTexture, uv);
+                float4 IBL_Color = SAMPLE_TEXTURE2D(_CopyIBLTex, sampler_CopyIBLTex, uv);
                 float4 specularMap = SAMPLE_TEXTURE2D_X(_GBuffer1, sampler_GBuffer1, uv);
                 specularMap.r = specularMap.r*0.8+0.2;
                 float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
@@ -258,15 +300,15 @@
                 Light _light = (Light)0;
                 _light.color = 0;
                 _light.direction = 0;
-                ssrColor.rgb = BRDF_Unity_PBS(0,cubeMap.rgb,oneMinusReflectivity,NormalMap.a,
+                ssrColor.rgb = BRDF_Unity_PBS(0,specularMap.r,oneMinusReflectivity,NormalMap.a,
                     NormalMap.xyz,viewDir,_light,brdf_data);
-                return float4(ssrColor.rgb*mask,1);
+                //return float4(ssrColor.rgb*mask,1);
                 #else
-                Light _light = (Light)0;
-                _light.color = 0;
-                _light.direction = 0;
-                ssrColor.rgb = BRDF_Unity_PBS(0,cubeMap.rgb,oneMinusReflectivity,NormalMap.a,
-                    NormalMap.xyz,viewDir,_light,brdf_data);
+                // Light _light = (Light)0;
+                // _light.color = 0;
+                // _light.direction = 0;
+                // ssrColor.rgb = BRDF_Unity_PBS(0,specularMap.r,oneMinusReflectivity,NormalMap.a,
+                //     NormalMap.xyz,viewDir,_light,brdf_data);
                 //return float4(ssrColor.rgb*ssrColor.a,1);
                 #endif
                 
@@ -276,12 +318,12 @@
                 // worldNormal.xyz,0,viewDir);
                 //ssrColor*=GetReflectivity(uv);
                 //return ssrInt;
-                //return mask;
+                //return float4(baseColor.rgb,mask);
 
-                float3 finalColor = lerp(cubeMap.rgb,ssrColor.rgb,saturate(mask));
-                // finalColor = ssrColor.rgb;
+                float3 finalColor = lerp(IBL_Color.rgb,ssrColor.rgb,saturate(mask));
+                finalColor += baseColor.rgb-IBL_Color.rgb;
                 
-                return float4(finalColor.rgb,cubeMap.a);
+                return float4(finalColor.rgb,baseColor.a);
             }
             ENDHLSL
         }
