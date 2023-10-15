@@ -37,9 +37,9 @@
     }
 
     float4 coneIntersect(in float3 ro, in float3 rd, in float3 pa, in float3 pb, in float ra, in float rb,
-                         out float2 dis)
+                         out float3 dis)
     {
-        dis = float2(0, 0);
+        dis = float3(0, 0, 0);
         float3 ba = pb - pa;
         float3 oa = ro - pa;
         float3 ob = ro - pb;
@@ -50,17 +50,22 @@
         float m5 = dot(oa, oa);
         float m9 = dot(ob, ba);
 
+        //
         // caps
         if (m1 < 0.0)
         {
             if (dot2(oa * m2 - rd * m1) < (ra * ra * m2 * m2)) // delayed division
-                return float4(-m1 / m2, -ba * sqrt(m0));
+            {
+                dis.z = -m1 / m2;
+                //return float4(-m1 / m2, -ba * sqrt(m0));
+            }
         }
         else if (m9 > 0.0)
         {
             float t = -m9 / m2; // NOT delayed division
             if (dot2(ob + rd * t) < (rb * rb))
-                return float4(t, ba * sqrt(m0));
+                dis.z = -m1 / m2;
+            //return float4(t, ba * sqrt(m0));
         }
 
         // body
@@ -87,9 +92,91 @@
             dis.y = t;
         }
         float t2 = t;
-        dis = float2(t1,t2);
+        dis = float3(t1, t2, dis.z);
         return float4(t, normalize(m0 * (m0 * (oa + t * rd) + rr * ba * ra) - ba * hy * y));
     }
+
+
+    // 计算射线和圆锥求交
+float2 RayConeIntersection(float3 rayOrigin, float3 rayDirection, float3 coneOrigin, float3 coneDirection, float coneAngle, float coneHeight)
+{
+    float3 oc = rayOrigin - coneOrigin;
+
+    float cosTheta = cos(coneAngle);
+    float sinTheta = sin(coneAngle);
+
+    // 计算与圆锥底部的交点
+    float tBase = dot(coneDirection, coneOrigin - rayOrigin) / dot(coneDirection, rayDirection);
+
+    // 计算与圆锥侧面的交点
+    float a = dot(rayDirection, rayDirection) - (cosTheta * cosTheta) * dot(rayDirection, coneDirection) * dot(rayDirection, coneDirection);
+    float b = 2.0 * (dot(rayDirection, oc) - (cosTheta * cosTheta) * dot(rayDirection, coneDirection) * dot(oc, coneDirection));
+    float c = dot(oc, oc) - (cosTheta * cosTheta) * dot(oc, coneDirection) * dot(oc, coneDirection);
+
+    float discriminant = b * b - 4.0 * a * c;
+
+    float2 tValues;
+
+    if (discriminant < 0.0)
+    {
+        // 没有与侧面相交的交点
+        tValues.x = -1.0;
+        tValues.y = -1.0;
+    }
+    else if (discriminant == 0.0)
+    {
+        // 射线与侧面相切
+        float t = -b / (2.0 * a);
+        if (t >= 0.0)
+        {
+            // 返回较近的交点
+            tValues.x = t;
+            tValues.y = -1.0;
+        }
+        else
+        {
+            tValues.x = -1.0;
+            tValues.y = -1.0;
+        }
+    }
+    else
+    {
+        // 射线与侧面相交于两个交点
+        float t1 = (-b + sqrt(discriminant)) / (2.0 * a);
+        float t2 = (-b - sqrt(discriminant)) / (2.0 * a);
+
+        if (t1 >= 0.0 && t2 >= 0.0)
+        {
+            // 返回两个交点
+            tValues.x = min(t1, t2);
+            tValues.y = max(t1, t2);
+        }
+        else if (t1 >= 0.0)
+        {
+            tValues.x = t1;
+            tValues.y = -1.0;
+        }
+        else if (t2 >= 0.0)
+        {
+            tValues.x = t2;
+            tValues.y = -1.0;
+        }
+        else
+        {
+            tValues.x = -1.0;
+            tValues.y = -1.0;
+        }
+    }
+
+    // 检查与圆锥底部的交点是否更近
+    if (tBase >= 0.0 && (tValues.x < 0.0 || tBase < tValues.x))
+    {
+        tValues.x = tBase;
+    }
+
+    return tValues;
+}
+    
 
     //start：开始的距离
     //rd：视线向量
@@ -231,29 +318,51 @@
                 float stepDt = 0.025;
                 float intensityPerStep = 0.015f;
                 float3 dt = 0;
-                float2 dis = float2(0, 0);
+                float3 dis = float3(0, 0, 0);
                 float outerAngle = cos(_VolumeLightParams.y);
 
                 float4 n = coneIntersect(curPos, dir, _ConeAParams.xyz, _ConeBParams.xyz,
                                          _ConeAParams.w, _ConeBParams.w, dis);
+                //float2 dis2 = RayConeIntersection(curPos,)
+                //return abs(dis.y);
 
-                float3 startPos = curPos + dir * dis.x;
-                float3 startPos2 = curPos + dir * dis.y;
+                float3 startPos;
+                float3 startPos2;
+                startPos = curPos + dir * (dis.x);
+                startPos2 = curPos + dir * (dis.y);
+                // if (dis.z == 0)
+                // {
+                //      startPos = curPos + dir * (dis.x);
+                //      startPos2 = curPos + dir * (dis.y);
+                // }
+                // else if (dis.y == 0)
+                // {
+                //      startPos = curPos + dir * (dis.x);
+                //      startPos2 = curPos + dir * (dis.z);
+                // }
+                // else
+                // {
+                //      startPos = curPos + dir * (dis.z);
+                //      startPos2 = curPos + dir * (dis.x);
+                // }
+
                 float3 startPosMin = (startPos + startPos2) / 2;
                 float3 startDir = normalize(startPosMin - _ConeAParams.xyz);
                 float startDirDotLightDir = dot(startDir, _VolumeLightDir);
                 //需要光的方向
-                float scale = InScatter(startPos, dir, _ConeAParams.xyz, abs(dis.x - dis.y));
+                //垂直衰减
+                float scale = InScatter(startPos, dir, _ConeAParams.xyz, abs(dis.x - dis.y)*_VolumeLightParams.z);
                 scale = smoothstep(0.02, 1.0, scale);
                 float atten = GetAtten(startDirDotLightDir, outerAngle,
                                        _VolumeLightParams.w);
-                atten = pow((startDirDotLightDir-outerAngle),_VolumeLightParams.w)*20;
+                //水平衰减
+                atten = pow((startDirDotLightDir - outerAngle), _VolumeLightParams.w) * 15;
                 atten = saturate(atten);
-                
+
                 //atten = GetAtten2(startDirDotLightDir,dir,_VolumeLightParams.w);
 
-                //return atten;
-                return float4(lerp(baseColor.rgb, _VolumeLightColor.rgb, scale * atten), 1);
+                //return scale;
+                return float4(lerp(baseColor.rgb, _VolumeLightColor.rgb, atten*scale), 1);
                 //return float4(lerp(baseColor.rgb, _VolumeLightColor.rgb, scale * atten), 1);
             }
             ENDHLSL

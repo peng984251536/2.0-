@@ -9,7 +9,8 @@ using LightType = UnityEngine.LightType;
 [ExecuteInEditMode]
 public class LightManager : MonoBehaviour
 {
-    [Range(0, 1)] public float attenInt = 0.5f;
+    [Range(0, 2)] public float attenIntH = 0.5f;
+    [Range(1, 5)] public float attenIntV = 1.0f;
     public GameObject maskMesh;
 
     public Light spotlight;
@@ -52,7 +53,7 @@ public class LightManager : MonoBehaviour
         // 获取聚光灯的位置
         Vector3 position = spotlight.transform.position;
         // 获取聚光灯的方向
-        Vector3 direction =  spotlight.transform.forward.normalized;
+        Vector3 direction = spotlight.transform.forward.normalized;
         // 获取聚光灯的内锥角和外锥角
         float innerAngle = spotlight.innerSpotAngle;
         float outerAngle = spotlight.spotAngle;
@@ -65,6 +66,8 @@ public class LightManager : MonoBehaviour
         //远端半径
         float rb = Mathf.Tan(outerAngle * 0.5f * Mathf.Deg2Rad) * range;
 
+        //PrintLine(position,position2);
+
         if (Test01 != null)
             Test01.transform.position = position;
         if (Test02 != null)
@@ -72,22 +75,22 @@ public class LightManager : MonoBehaviour
         if (mask_go == null)
             mask_go = Instantiate(maskMesh, spotlight.transform, true);
         mask_go.transform.up = direction;
-        mask_go.transform.localScale = new Vector3(rb*2 , range / 2, rb*2 );
+        mask_go.transform.localScale = new Vector3(rb * 2, range / 2, rb * 2);
         mask_go.transform.position = (position + position2) / 2;
-        
-        Matrix4x4 scaleMatrix = Matrix4x4.Scale(new Vector3(1,0.5f,1));
-        Matrix4x4 moveMatrix = Matrix4x4.Translate(new Vector3(0,0.5f,0));
+
+        Matrix4x4 scaleMatrix = Matrix4x4.Scale(new Vector3(1, 0.5f, 1));
+        Matrix4x4 moveMatrix = Matrix4x4.Translate(new Vector3(0, 0.5f, 0));
 
 
         Shader.SetGlobalVector("_ConeAParams", new Vector4(position.x, position.y, position.z, 0));
         Shader.SetGlobalVector("_ConeBParams", new Vector4(position2.x, position2.y, position2.z, rb));
-        Shader.SetGlobalColor("_VolumeLightColor",spotlight.color); 
+        Shader.SetGlobalColor("_VolumeLightColor", spotlight.color);
         Shader.SetGlobalVector("_VolumeLightParams",
             new Vector4(
                 math.radians(innerAngle * 0.5f),
                 math.radians(outerAngle * 0.5f),
-                0,
-                attenInt
+                attenIntV,
+                attenIntH
             )
         );
         Shader.SetGlobalVector("_VolumeLightDir",
@@ -96,7 +99,7 @@ public class LightManager : MonoBehaviour
                 direction.y,
                 direction.z,
                 0
-                ));
+            ));
 
         // 打印聚光灯参数
         //Debug.Log("Rb: " + rb);RenderObject
@@ -106,4 +109,17 @@ public class LightManager : MonoBehaviour
         // Debug.Log("Range: " + range);
         // Debug.Log("Intensity: " + intensity);
     }
+
+    public void PrintLine(Vector3 position,Vector3 position2)
+    {
+        //绘制箭头
+        DirTest dirTest = this.gameObject.GetComponent<DirTest>();
+        if (dirTest == null)
+        {
+            dirTest = this.gameObject.AddComponent<DirTest>();
+        }
+        dirTest.SetDrawLine(position, position2);
+    }
+    
+    
 }
