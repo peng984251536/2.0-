@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPR_ToonShader_clothes1
+  m_Shader: {fileID: 4800000, guid: fe85ecaaa23565141ae3c8c6d4a25f79, type: 3}
+  m_ValidKeywords:
+  - _RAMP_COORBODY
+  m_InvalidKeywords:
+  - _HAIR__HAIR
+  - _RAMPSTATE_HAIR
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _IBLMap:
+        m_Texture: {fileID: 2800000, guid: 5f032995482d70f4cad25e9476ba5ef7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 3b212571a4c6ce14c8b14c9b645f0c27, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatCap:
+        m_Texture: {fileID: 2800000, guid: 6872a594ca91bf440bb1a54220945121, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap01:
+        m_Texture: {fileID: 2800000, guid: 758859889fb94c340bf78909992fb3c1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap02:
+        m_Texture: {fileID: 2800000, guid: 3154005b4c8d7ae4087a00a5609bd724, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap03:
+        m_Texture: {fileID: 2800000, guid: 1b7ac691f3c21dd448b779dd9d8459c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _EdgeWidth: 0.08
+    - _HAIR: 0
+    - _MatCapIns: 0.64
+    - _RAMP: 2
+    - _RampState: 0
+    - _SepcularMatellicIns: 1.26
+    - _SpecularIns: 3
+    - _SpecularWith: 1.2
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DebugParams: {r: 0.14, g: 1, b: 2, a: 0.8}
+    - _EdgeColor: {r: 0.277, g: 0.24048638, b: 0.23293184, a: 1}
+  m_BuildTextureStacks: []
