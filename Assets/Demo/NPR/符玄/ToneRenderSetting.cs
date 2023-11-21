@@ -16,8 +16,12 @@ public class ToneRenderSetting : MonoBehaviour
         BaseColor,
     }
 
+    public static bool BlendEyeRender = true;
+    public bool blendEyeRender = true;
     public DebugLog debugLogState = DebugLog.IBL_A;
     public MeshRenderer debugMesh;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +31,7 @@ public class ToneRenderSetting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        BlendEyeRender = blendEyeRender;
         DebugMeshFunction();
     }
 

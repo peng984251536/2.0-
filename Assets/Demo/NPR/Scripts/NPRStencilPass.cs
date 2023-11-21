@@ -4,7 +4,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-
+//DrawOpaqueObjects
 //unity提供的渲染pass的父类
 public class NPRStencilPass : ScriptableRenderPass
 {
@@ -23,9 +23,17 @@ public class NPRStencilPass : ScriptableRenderPass
     //创建该shader中各个pass的ShaderTagId
     private List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>()
     {
+        
+        new ShaderTagId("MyUniversalForward"),
         new ShaderTagId("StencilMaskRead"),
         new ShaderTagId("StencilMaskBlend"),
-        new ShaderTagId("MyUniversalForward")
+        new ShaderTagId("MySRPDefaultUnlit"),//描边用
+    };
+    private List<ShaderTagId> m_ShaderTagIdList2 = new List<ShaderTagId>()
+    {
+        
+        new ShaderTagId("MyUniversalForward"),
+        new ShaderTagId("MySRPDefaultUnlit"),//描边用
     };
 
     //TestRenderPass类的构造器，实例化的时候调用
@@ -34,7 +42,7 @@ public class NPRStencilPass : ScriptableRenderPass
     public NPRStencilPass(string profilerTag, RenderPassEvent renderPassEvent)
     {
         //调试用
-        base.profilingSampler = new ProfilingSampler(nameof(profilerTag));
+        base.profilingSampler = new ProfilingSampler("DrawOpaqueObjects");
 
         this.renderPassEvent = renderPassEvent;
         m_renderQueueType = RenderQueueType.Opaque;
@@ -61,17 +69,29 @@ public class NPRStencilPass : ScriptableRenderPass
         CommandBuffer cmd = CommandBufferPool.Get();
         using (new ProfilingScope(cmd, profilingSampler))
         {
+            context.ExecuteCommandBuffer(cmd);
+            cmd.Clear();
             
             //渲染设置
             SortingCriteria sortingCriteria = (m_renderQueueType == RenderQueueType.Transparent)
                 ? SortingCriteria.CommonTransparent
                 : renderingData.cameraData.defaultOpaqueSortFlags;
             SortingCriteria sorting = SortingCriteria.RenderQueue;
+
+            DrawingSettings drawingSettings;
+            if (ToneRenderSetting.BlendEyeRender)
+            {
+                //设置 渲染设置
+                drawingSettings = CreateDrawingSettings(
+                    m_ShaderTagIdList, ref renderingData, sorting);
+            }
+            else
+            {
+                //设置 渲染设置
+                drawingSettings = CreateDrawingSettings(
+                    m_ShaderTagIdList2, ref renderingData, sorting);
+            }
             
-            
-            //设置 渲染设置
-            var drawingSettings = CreateDrawingSettings(
-                m_ShaderTagIdList, ref renderingData, sorting);
             //drawingSettings.overrideMaterial = overrideMaterial;
             //不透明
             RenderQueueRange renderQueueRange = RenderQueueRange.opaque;

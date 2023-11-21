@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: a53148aa930f2564ca2365dc1e0dee5c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _ramp_coorColor: {fileID: 2800000, guid: 3154005b4c8d7ae4087a00a5609bd724, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

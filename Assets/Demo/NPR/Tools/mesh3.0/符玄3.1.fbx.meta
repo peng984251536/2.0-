@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: c40ef7fa7615b1e4689d7d31bd46ce42
+guid: b1373a980a8b44f48804d87a09b32ec1
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: EyeShadow
-    second: {fileID: 2100000, guid: 02ebe7e63f76a7245bf7912558937c99, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u4E0A\u534A\u8EAB.003"
-    second: {fileID: 2100000, guid: 54723ac45c7b136428b1daae26b911eb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u8DB3.003"
-    second: {fileID: 2100000, guid: 2429c7faf355f7641a50e0e18f78538e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u984F.003"
-    second: {fileID: 2100000, guid: bdd5ab1323542ed419abe405c04dc113, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: "\u99AC\u5C3E"
-    second: {fileID: 2100000, guid: 2fbf85238b0a5d140bb3dc1a05814371, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -57,7 +32,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -99,7 +74,7 @@ ModelImporter:
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 3
+    normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
   humanDescription:

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPR_ToonEyeShader
+  m_Shader: {fileID: 4800000, guid: 4a57a96c007749be9fc1d11dabc0279e, type: 3}
+  m_ValidKeywords:
+  - _RAMP_COORBODY
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _LightingMap:
+        m_Texture: {fileID: 2800000, guid: 60458ee5f6c74814d8e5f1f289cf1fc1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 935318f899e0cf543b6068f012426cd4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap02:
+        m_Texture: {fileID: 2800000, guid: 3154005b4c8d7ae4087a00a5609bd724, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampMap03:
+        m_Texture: {fileID: 2800000, guid: 1b7ac691f3c21dd448b779dd9d8459c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _EdgeWidth: 0
+    - _HAIR: 0
+    - _RAMP: 0
+    - _SComp: 7
+    - _SOp: 2
+    - _SRef: 10
+    - _ShadowOffset: -0.1
+    - _SpecularIns: 0.5
+    - _SpecularWith: 5
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DebugParams: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
