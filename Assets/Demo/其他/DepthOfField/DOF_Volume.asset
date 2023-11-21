@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8484085490931592630
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55dc2da0c174a98ab04c9a1fdbbdc76, type: 3}
+  m_Name: DOFVolume
+  m_EditorClassIdentifier: 
+  active: 0
+  _FocusDistance:
+    m_OverrideState: 1
+    m_Value: 8.18
+  _FocusRange:
+    m_OverrideState: 1
+    m_Value: 0.87
+  _FocusRadius:
+    m_OverrideState: 1
+    m_Value: 4.92
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1.49
+--- !u!114 &-7094781095405535089
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: 
+  active: 0
+  threshold:
+    m_OverrideState: 1
+    m_Value: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 5
+  scatter:
+    m_OverrideState: 0
+    m_Value: 0.7
+  clamp:
+    m_OverrideState: 0
+    m_Value: 65472
+  tint:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  highQualityFiltering:
+    m_OverrideState: 0
+    m_Value: 0
+  skipIterations:
+    m_OverrideState: 0
+    m_Value: 1
+  dirtTexture:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+  dirtIntensity:
+    m_OverrideState: 0
+    m_Value: 0
+--- !u!114 &-2978062994312899117
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3bebdc302b4c17870433c02e3cbc1f, type: 3}
+  m_Name: VolumetricVolume
+  m_EditorClassIdentifier: 
+  active: 1
+  enableEffect:
+    m_OverrideState: 1
+    m_Value: 1
+  downsampleDivider:
+    m_OverrideState: 1
+    m_Value: 0
+  _StepSize:
+    m_OverrideState: 1
+    m_Value: 1
+  _MaxStep:
+    m_OverrideState: 1
+    m_Value: 50
+  _LightIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+  _LightColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  _LightAttenIntensity:
+    m_OverrideState: 1
+    m_Value: 0.35
+  _LightAttenSmooth:
+    m_OverrideState: 1
+    m_Value: 0.2
+--- !u!114 &-1111963271809463488
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
+  m_Name: Tonemapping
+  m_EditorClassIdentifier: 
+  active: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: DOF_Volume
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: -8484085490931592630}
+  - {fileID: -1111963271809463488}
+  - {fileID: -7094781095405535089}
+  - {fileID: -2978062994312899117}

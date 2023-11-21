@@ -35,9 +35,10 @@ public class GenshipSkyParams : MonoBehaviour
     
     [Header("Star")]
     public Color _star_color = new Color(0.891852f, 0.4535326f, 0.1378029f);
-    [Range(0, 10)]
+    [Range(0, 50)]
     public float _star_color_intensity = 1.163067f;
     public Vector2 _star_mask = new Vector2(0,1);
+    public Vector2 _star_mask2 = new Vector2(0,1);
     public Vector3 _star_offset = new Vector3(0,0,0);
     public float _star_scale = 5.0f;
 
@@ -85,6 +86,7 @@ public class GenshipSkyParams : MonoBehaviour
         mpb.SetColor(nameof(_star_color), _star_color);
         mpb.SetFloat(nameof(_star_color_intensity), _star_color_intensity);
         mpb.SetVector(nameof(_star_mask), _star_mask);
+        mpb.SetVector(nameof(_star_mask2), _star_mask2);
         mpb.SetVector(nameof(_star_offset),_star_offset);
         mpb.SetFloat(nameof(_star_scale),_star_scale);
         

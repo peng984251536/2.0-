@@ -83,7 +83,6 @@ public class GrayRayBloomFeature : ScriptableRendererFeature
             RenderTextureDescriptor descriptor = renderingData.cameraData.cameraTargetDescriptor;
             m_ScriptablePasse.Setup(descriptor, m_BloomTexture, m_BloomTextureNew);
             m_ScriptablePasse.cameraRenderTarget = renderer.cameraColorTarget;
-            m_ScriptablePasse.intensity = this.intensity;
             renderer.EnqueuePass(m_ScriptablePasse);
         }
 

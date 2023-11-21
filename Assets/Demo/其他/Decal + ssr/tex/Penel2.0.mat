@@ -43,8 +43,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Merallic: 0.101
-    - _NormalScale: 0.1
+    - _Merallic: 0.055
+    - _NormalScale: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0.199

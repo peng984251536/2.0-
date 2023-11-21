@@ -10,7 +10,6 @@ Material:
   m_Name: URP_ScreenSpaceRefShader
   m_Shader: {fileID: 4800000, guid: b0bab580594a417a9dac2b5a425ea09f, type: 3}
   m_ValidKeywords:
-  - _IMPORTANCE_SAMPLING
   - _MULIT_SAMPLING
   - _PATIO_FILTER
   m_InvalidKeywords:

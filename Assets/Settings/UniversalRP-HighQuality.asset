@@ -23,14 +23,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d23180983dbc1147bf6867df9b26754, type: 2}
   - {fileID: 11400000, guid: c102120e998e9cc47964efdf15823342, type: 2}
   - {fileID: 11400000, guid: 63e7ccaf079b4974fbb4c254c58aed72, type: 2}
-  m_DefaultRendererIndex: 4
+  - {fileID: 11400000, guid: e0ef323f0d534be45be8bf4ff58d3c96, type: 2}
+  - {fileID: 11400000, guid: ee03f5d677c025647bc6938a99c17ace, type: 2}
+  - {fileID: 11400000, guid: 6efcb34784cd72d4da3bd79edd834786, type: 2}
+  - {fileID: 11400000, guid: ee03f5d677c025647bc6938a99c17ace, type: 2}
+  - {fileID: 11400000, guid: 961ed132d21dbca41bffab2ef64854c6, type: 2}
+  m_DefaultRendererIndex: 6
   m_RequireDepthTexture: 1
   m_RequireOpaqueTexture: 1
-  m_OpaqueDownsampling: 1
+  m_OpaqueDownsampling: 0
   m_SupportsTerrainHoles: 0
   m_StoreActionsOptimization: 0
   m_SupportsHDR: 1
-  m_MSAA: 1
+  m_MSAA: 4
   m_RenderScale: 1
   m_UpscalingFilter: 0
   m_FsrOverrideSharpness: 0
@@ -40,7 +45,7 @@ MonoBehaviour:
   m_MainLightShadowmapResolution: 2048
   m_AdditionalLightsRenderingMode: 1
   m_AdditionalLightsPerObjectLimit: 4
-  m_AdditionalLightShadowsSupported: 1
+  m_AdditionalLightShadowsSupported: 0
   m_AdditionalLightsShadowmapResolution: 512
   m_AdditionalLightsShadowResolutionTierLow: 128
   m_AdditionalLightsShadowResolutionTierMedium: 256
@@ -48,19 +53,19 @@ MonoBehaviour:
   m_ReflectionProbeBlending: 0
   m_ReflectionProbeBoxProjection: 0
   m_ShadowDistance: 50
-  m_ShadowCascadeCount: 3
+  m_ShadowCascadeCount: 4
   m_Cascade2Split: 0.25
   m_Cascade3Split: {x: 0.1, y: 0.3}
-  m_Cascade4Split: {x: 0.067, y: 0.2, z: 0.467}
-  m_CascadeBorder: 0.1
-  m_ShadowDepthBias: 1
+  m_Cascade4Split: {x: 0.2264533, y: 0.46423703, z: 0.72668123}
+  m_CascadeBorder: 0.083305486
+  m_ShadowDepthBias: 1.42
   m_ShadowNormalBias: 1
   m_AnyShadowsSupported: 1
   m_SoftShadowsSupported: 1
   m_ConservativeEnclosingSphere: 0
   m_NumIterationsEnclosingSphere: 64
   m_AdditionalLightsCookieResolution: 2048
-  m_AdditionalLightsCookieFormat: 3
+  m_AdditionalLightsCookieFormat: 1
   m_UseSRPBatcher: 1
   m_SupportsDynamicBatching: 0
   m_MixedLightingSupported: 1

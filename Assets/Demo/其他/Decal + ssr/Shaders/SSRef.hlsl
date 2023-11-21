@@ -205,16 +205,16 @@ float4 resolve(v2f i) : SV_Target
         //sampleColor.rgb += _MyBaseMap.SampleLevel(sampler_MyBaseMap,hitUv,mip).rgb;
         sampleColor.a = RayAttenBorder(hitUv, _EdgeFactor) * hitMask;
 
-        // if (_Fireflies == 1)
-        //     sampleColor.rgb /= 1 + Luminance(sampleColor.rgb);
+        if (_Fireflies == 1)
+            sampleColor.rgb /= 1 + Luminance(sampleColor.rgb);
 
         result += sampleColor * weight;
         weightSum += weight;
     }
     result /= weightSum;
 
-    // if (_Fireflies == 1)
-    //     result.rgb /= 1 - Luminance(result.rgb);
+    if (_Fireflies == 1)
+        result.rgb /= 1 - Luminance(result.rgb);
     if (_Fireflies == 1)
         result.rgb = ToneMapping(result);
 

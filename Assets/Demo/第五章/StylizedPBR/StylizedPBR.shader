@@ -92,8 +92,8 @@
 
                 
 
-                
-                return float4(finalColor, 1);
+                return 0;
+                //return float4(finalColor, 1);
             }
             ENDHLSL
         }

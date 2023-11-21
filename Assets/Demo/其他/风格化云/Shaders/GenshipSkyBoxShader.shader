@@ -4,28 +4,67 @@
     {
         [NoScaleOffset]_IrradianceMap("_IrradianceMap", 2D) = "white" {}
         _NoiseMap("_NoiseMap", 2D) = "white" {}
+        _StarMap("_StarMap", 2D) = "white" {}
     }
     
     HLSLINCLUDE
+
+    float3 _star_offset;
+    float2 _star_mask;
+    float2 _star_mask2;
     
     //生成随机数
     float rand(float3 co)
     {
         return frac(sin(dot(co.xyz, float3(12.9898, 78.233, 53.539))) * 43758.5453);
-        
     }
-    half3 tex3DAsNormal(Texture2D tex, SamplerState _sampler
-        ,float2 xy, float2 yz, float2 xz, float3 worldNormal)
-    {
-        half3 colorForward = tex.SampleLevel(_sampler,yz,0);
-        half3 colorUp = tex.SampleLevel(_sampler,xz,0);
-        half3 colorLeft = tex.SampleLevel(_sampler,xy,0); 
 
+    float rand2(float3 co)
+    {
+        float d1 = distance(co.xyz,float3(12.9898, 78.233, 53.539));
+        float d2 = distance(co.xyz,float3(-12.9898, -78.233, -53.539));
+        return sin(d1+d2)*0.5+0.5;
+    }
+
+    float2 roateUV(float2 uv,float roateVal)
+    {
+        uv = uv.xy - float2(0.5, 0.5);//UV原点移动到UV中心点
+		
+		//float2 rotate = float2(cos(_RSpeed *_Time.x), sin(_RSpeed *_Time.x));
+		//uv = float2(uv.x * rotate.x - uv.y * rotate.y, uv.x * rotate.y + uv.y * rotate.x)
+        //θ旋转角度 UV旋转 (xcosθ - ysinθ,xsinθ+ycosθ)
+		uv = float2(uv.x *cos(-roateVal) - uv.y * sin(-roateVal),uv.x *sin(-roateVal) + uv.y*cos(-roateVal));
+		uv += float2(0.5, 0.5);//UV中心转移回原来原点位置
+        return uv;
+    }
+    
+    half3 tex3DAsNormal(Texture2D tex, SamplerState _sampler
+        ,float2 xy, float2 yz, float2 xz, float3 worldNormal,float scale)
+    {
+        // float roateVal = distance(float3(xy,yz.y),0);
+        //
+        // roateVal = floor(roateVal);
+        //
+        // xy = roateUV(xy,roateVal)*scale;
+        // yz = roateUV(yz,roateVal)*scale;
+        // xz = roateUV(xz,roateVal)*scale;
+        
+        half3 colorForward = tex.SampleLevel(_sampler,yz*scale,0);
+        half3 colorUp = tex.SampleLevel(_sampler,xz*scale,0);
+        half3 colorLeft = tex.SampleLevel(_sampler,xy*scale,0); 
+
+        
+        
         worldNormal = abs(worldNormal);
         worldNormal = worldNormal / (worldNormal.x + worldNormal.y + worldNormal.z);
-        half3 finalColor = colorForward * worldNormal.x + colorUp * worldNormal.y + colorLeft * worldNormal.z;
-
-        return finalColor;
+        half3 finalColor;
+        
+        // worldNormal.x =smoothstep(0.0,1,worldNormal.x);
+        // worldNormal.y=smoothstep(0.0,1,worldNormal.y);
+        // worldNormal.z=smoothstep(0.0,1,worldNormal.z);
+        
+        finalColor = colorForward * worldNormal.x + colorUp * worldNormal.y + colorLeft * worldNormal.z;
+        return 1-finalColor;
     }
 
     ENDHLSL
@@ -54,6 +93,8 @@
             SAMPLER(sampler_IrradianceMap);
             TEXTURE2D(_NoiseMap);
             SAMPLER(sampler_NoiseMap);
+            TEXTURE2D(_StarMap);
+            SAMPLER(sampler_StarMap);
 
             // /* day 白天: sun sky 属性 start
             float3 _upPartSunColor;
@@ -87,8 +128,6 @@
             //star
             float3 _star_color;
             float _star_color_intensity;
-            float3 _star_offset;
-            float2 _star_mask;
             float _star_scale;
             
             // // -------------------------- */
@@ -158,6 +197,7 @@
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 normal : NORMAL;
                 float2 uv : TEXCOORD0;
             };
 
@@ -165,7 +205,7 @@
             {
                 float4 Varying_StarColorUVAndNoise_UV : TEXCOORD0;
                 float4 Varying_NoiseUV_large : TEXCOORD1;
-                float4 Varying_ViewDirAndAngle1_n1 : TEXCOORD2;
+                float4 Varying_ViewDirAndRandom : TEXCOORD2;
                 float4 Varying_IrradianceColor : TEXCOORD3;
                 float3 posWS :TEXCOORD4;
                 float3 normalWS :TEXCOORD5;
@@ -191,8 +231,8 @@
                 float _VDotSun = dot(_sun_dir, _viewDir.xyz);
                 float _VDotMoon = dot(_moon_dir, _viewDir.xyz);
                 float _UpDotSun = dot(_UpDir, _sun_dir);
-                //
                 float upDotV = abs(dot(_UpDir, _viewDir.xyz));
+                float random = rand(_worldPos.xyz);
                 //o.Varying_IrradianceColor.rgb = upDotV;
 
                 //以下直接在顶点着色器计算了（地平线颜色，天空颜色）
@@ -234,15 +274,15 @@
 
                 //计算调用noise的uv
                 //这个uv需要利用三面映射算法
-                float random = rand(_worldPos.xyz);
                 //float2 screenUV = _clippos.xy/_clippos.w;
                 float2 uv = v.uv *_star_scale;//+float2(1,0)*random;
 
                 // //调试用
                 o.Varying_IrradianceColor.xyz = _additionPart + _mainColor;
                 o.Varying_IrradianceColor.w = _VDotSunDampingA_pow3;
-                //o.Varying_IrradianceColor.rgb = _mainColor;
+                o.Varying_StarColorUVAndNoise_UV.zw = v.uv;
                 o.posWS = _worldPos;
+                o.normalWS = TransformObjectToWorldNormal(v.normal);
 
                 return o;
             }
@@ -253,12 +293,14 @@
                 //return i.Varying_IrradianceColor.r;
                 //return float4(i.Varying_IrradianceColor.rgb,1);
 
-                //太阳渲染
                 float3 _viewDir = normalize(i.posWS.xyz - _WorldSpaceCameraPos /*_WorldSpaceCameraPos*/);
                 //这是关于视角向量 和 up 的角度
                 float _VDotUp = dot(_viewDir, _UpDir);
                 float _UpDotSun = dot(_UpDir, _sun_dir);
                 float _UpDotMoon = dot(_UpDir, _moon_dir);
+                
+
+                //太阳渲染
                 //越向上或者越向下的天空盒，这个参数就越大,为了让pow的时候，越接近地平线值越小
                 float _VDotUp_Multi999 = abs(_VDotUp) * _sun_disk_power_999;
                 //这里是 太阳落下的光照
@@ -279,22 +321,33 @@
                 }
                 sun_Disk_mask *= _sun_part_enable;
                 float3 finalColor = lerp(i.Varying_IrradianceColor.rgb,sun_Disk_color,sun_Disk_mask);
+                finalColor = saturate(finalColor);
                 //sun_Disk_color *= sun_Disk_mask;
                 //return sunDisk;
                 //return float4(sun_Disk_color,1);
 
                 //星星-70
                 float _StarMask = smoothstep(-0.1,0,_UpDotMoon);
-                float3 random = rand(i.posWS.xyz);
-                float3 samplerUV =(normalize(i.posWS.xyz))*_star_scale;
-                float3 samplerNormal = normalize(_viewDir.xyz+_star_offset);
-                float noiseMask = tex3DAsNormal(_NoiseMap,sampler_NoiseMap,
-                    samplerUV.xy,samplerUV.yz,samplerUV.xz,samplerNormal);
+                float random = rand2(i.posWS.xyz);
+                float3 samplerUV =(normalize(i.posWS.xyz));
+                float3 samplerUV2 =(normalize(i.posWS.xyz)/4);
+                float3 samplerNormal = normalize(_viewDir.xyz);
+                float noiseMask1 = tex3DAsNormal(_NoiseMap,sampler_NoiseMap,
+                    samplerUV.xy,samplerUV.yz,samplerUV.xz,samplerNormal,_star_scale);
+                float noiseMask2 = tex3DAsNormal(_NoiseMap,sampler_NoiseMap,
+                    samplerUV.xy,samplerUV.yz,samplerUV.xz,samplerNormal,1/_star_offset.z);
                 //float _noise = _NoiseMap.Sample(sampler_NoiseMap,i.Varying_StarColorUVAndNoise_UV.xy).r;
-                _StarMask = _StarMask*smoothstep(_star_mask.x,_star_mask.x+_star_mask.y,noiseMask);
-                float3 star_color = _star_color*_star_color_intensity;
-                finalColor = lerp(finalColor,star_color,_StarMask);
-                //return _StarMask;
+                noiseMask1 = _StarMask*smoothstep(_star_mask.x,_star_mask.x+_star_mask.y,noiseMask1);
+                noiseMask2 = _StarMask*smoothstep(_star_mask2.x,_star_mask2.x+_star_mask2.y,noiseMask2);
+                random = (random)/3;
+                float2 starMapUV = float2(random,0.5);
+                float3 starColor = _StarMap.Sample(sampler_StarMap,starMapUV);
+                float3 star_color = starColor*_star_color_intensity;
+                finalColor = lerp(finalColor,star_color,noiseMask1*noiseMask2);
+                //return noiseMask1*noiseMask2;
+                //return float4(starColor,1) ;
+                //return float4(star_color*noiseMask1*noiseMask2,1) ;
+                //return float4(finalColor,1) ;
                 //return _noise;
 
                 //月亮

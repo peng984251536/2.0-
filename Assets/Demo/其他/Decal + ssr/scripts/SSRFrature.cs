@@ -23,9 +23,9 @@ public class SSRFrature : ScriptableRendererFeature
 
         [Range(0, 1)] public float _BRDFBias = 0.7f;
         [Range(0.0f, 1.0f)] public float _EdgeFactor = 0.25f;
-        public int _rayStepNum = 10;
-        public float _rayStepScale = 1.0f;
-        public float _thickness = 0.1f;
+        public int _rayStepNum = 50;
+        public float _rayStepScale = 0.25f;
+        public float _thickness = -0.61f;
         public bool IsImportanceSampling = true;
         public bool IsMulitSampling = true;
         public bool IsPatioFilter = true;
@@ -35,6 +35,7 @@ public class SSRFrature : ScriptableRendererFeature
 
 
     private SSRPass pass;
+    private SSRMaskPass m_ssrMaskPass;
     private const string k_IsImportanceSampling = "_IMPORTANCE_SAMPLING";
     private const string k_IsMulitSampling = "_MULIT_SAMPLING";
     private const string k_IsPatioFilter = "_PATIO_FILTER";
@@ -70,6 +71,10 @@ public class SSRFrature : ScriptableRendererFeature
             return;
         if (pass == null)
             return;
+        if (m_ssrMaskPass == null)
+        {
+            m_ssrMaskPass = new SSRMaskPass(nameof(SSRMaskPass));
+        }
         if (copyColorPass == null)
         {
             copyColorPass = new CopyColorPass(RenderPassEvent.AfterRenderingGbuffer,
@@ -82,8 +87,10 @@ public class SSRFrature : ScriptableRendererFeature
         }
         copyColorPass.Setup(renderer.cameraColorTarget,
             Ibl_RTHandle, Downsampling.None);
+        m_ssrMaskPass.SetUp(RenderPassEvent.AfterRenderingGbuffer-5);
         renderer.EnqueuePass(copyColorPass);
         renderer.EnqueuePass(pass);
+        renderer.EnqueuePass(m_ssrMaskPass);
         pass.downsampleDivider = _RayMarchSettings._downsampleDivider;
         pass.copy_iblTex = Ibl_RTHandle;
 

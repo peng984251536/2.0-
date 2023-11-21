@@ -38,6 +38,8 @@ public class DirectLightSetting : MonoBehaviour
 
     private void Update()
     {
+        if(Moon==null)
+            return;
         if (sunDirectLight != null)
         {
             if (sunDirectLight.transform.forward.y > 0)

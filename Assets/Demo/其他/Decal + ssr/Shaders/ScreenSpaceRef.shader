@@ -159,7 +159,7 @@
             #pragma fragment TemporalFrag
 
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-            #include "Assets/Demo/其他/VolumeFog/Shaders/VFTemporal.hlsl"
+            #include "VFTemporal.hlsl"
 
             // TEXTURE2D(_CameraTexture);
             // SAMPLER(sampler_CameraTexture);

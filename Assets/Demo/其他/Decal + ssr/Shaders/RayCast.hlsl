@@ -7,6 +7,8 @@ TEXTURE2D(_CameraTexture);
 SAMPLER(sampler_CameraTexture);
 TEXTURE2D(_NoiseTex);
 SAMPLER(sampler_NoiseTex);
+TEXTURE2D(_SSRMaskMap);
+SAMPLER(sampler_SSRMaskMap);
 
 float4 _CameraDepthTexture_TexelSize;
 float4 _CameraDepthTexture_ST;
@@ -118,11 +120,11 @@ float4 TangentToWorld(float3 N, float4 H)
 float4 MyImportanceSampleGGX(float2 Xi, float Roughness)
 {
     float m = Roughness * Roughness;
-    float m2 = m * m;
+    //float m2 = m * m;
 		
     float Phi = 2 * PI * Xi.x;
 				 
-    float CosTheta = sqrt((1.0 - Xi.y) / (1.0 + (m2 - 1.0) * Xi.y));
+    float CosTheta = sqrt((1.0 - Xi.y) / (1.0 + (m - 1.0) * Xi.y));
     float SinTheta = sqrt(max(1e-5, 1.0 - CosTheta * CosTheta));
 				 
     float3 H;
@@ -130,8 +132,8 @@ float4 MyImportanceSampleGGX(float2 Xi, float Roughness)
     H.y = SinTheta * sin(Phi);
     H.z = CosTheta;
 		
-    float d = (CosTheta * m2 - CosTheta) * CosTheta + 1;
-    float D = m2 / (PI * d * d);
+    float d = (CosTheta * m - CosTheta) * CosTheta + 1;
+    float D = m / (PI * d * d);
     float pdf = D * CosTheta;
 
     return float4(H, pdf);
@@ -143,11 +145,12 @@ void rayCast(v2f i, out half4 outRayCast : SV_Target0, out half4 outRayCastMask 
     //outRayCast = float4(uv,0,1);
 
     float4 NormalMap = SAMPLE_TEXTURE2D(_GBuffer2, sampler_GBuffer2, uv);
+    float ssrMaskMap = SAMPLE_TEXTURE2D(_SSRMaskMap,sampler_SSRMaskMap,uv).r;
     float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
-    float2 uv_jitter = (uv + _JitterSizeAndOffset.zw*_JitterSizeAndOffset.xy) *
+    float2 uv_jitter = (uv + _JitterSizeAndOffset.zw) *
         _ScreenSize.xy / _downsampleDivider * _NoiseTex_TexelSize.xy;
-    float2 jitter = _NoiseTex.SampleLevel( sampler_NoiseTex, uv_jitter,-0).rg;
-    jitter *= _JitterSizeAndOffset.xy;
+    float2 jitter = _NoiseTex.SampleLevel( sampler_NoiseTex, uv_jitter,0).rg;
+    //jitter *= _JitterSizeAndOffset.xy;
     float roughness = clamp(1 - NormalMap.a,0.05,0.95) ;
     float2 Xi = jitter;
 
@@ -175,7 +178,7 @@ void rayCast(v2f i, out half4 outRayCast : SV_Target0, out half4 outRayCastMask 
     #if defined(_IMPORTANCE_SAMPLING)
     //float3 normalVS = normalize(mul(_VMatrix,NormalMap.xyz));
     float4 H = TangentToWorld(NormalMap.xyz, MyImportanceSampleGGX(Xi, roughness));
-    //H.xyz = normalize(H.xyz);
+    H.xyz = normalize(H.xyz);
     //H.xyz = normalize(mul(_VMatrix_invers,H.xyz));
     #else
     float4 H = float4(NormalMap.xyz, 1);
@@ -200,7 +203,7 @@ void rayCast(v2f i, out half4 outRayCast : SV_Target0, out half4 outRayCastMask 
                    numSteps, stepSize, thickness);
 
     outRayCast = float4(rayTrace.xyz, H.w);
-    outRayCastMask = rayTrace.w;
+    outRayCastMask = rayTrace.w*ssrMaskMap;
     //return rayTrace.w;
     //return float4(rayTrace.xy,0,1);
     //return float4(rayTrace.xyz*rayTrace.w,rayTrace.w);

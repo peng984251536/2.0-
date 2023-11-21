@@ -259,32 +259,38 @@
 
             float4 frag(v2f i) : SV_Target
             {
+                float _UpDotMoon = dot(_UpDir, _moon_dir);
                 float4 noiseMap = _NoiseMap.Sample(sampler_NoiseMap, i.Varying_StarColorUVAndNoise_UV.zw);
                 float2 offsetNoise = noiseMap.rg*float2(_ScreenSize.z,_ScreenSize.w);
                 float2 uv = i.Varying_StarColorUVAndNoise_UV.xy+offsetNoise*4;
                 float4 CloudMask = _CloudMaskMap.Sample(sampler_CloudMaskMap, uv);
                 
-                
+
+                //漫反射
                 //利用上阴影mask
-                float3 cloudColor = lerp(i.Varying_DownColor, i.Varying_UpColor, CloudMask.x);
+                float3 cloudColor = lerp(i.Varying_DownColor, i.Varying_UpColor, CloudMask.r);
                 //cloudColor*=0.5;
                 //cloudColor = cloudColor*CloudMask.x;
 
                 //--------cloudSum----------//
-                //太阳初升时的高光
                 //利用这个SDF调整云大小
-                float random = sin(i.Varying_ShineColorAndRandom.w*PI+_Time.y/25)*0.5+0.5;
-                float sdfMask = smoothstep(saturate(random - 0.5), random,
+                //太阳初升时的高光
+                float cloudMask = smoothstep(-0.5,0.5,_UpDotMoon)*1.5;
+                cloudMask = min(cloudMask,_Cloud_SDF_TSb);
+                float random = sin(i.Varying_ShineColorAndRandom.w)*0.5+0.5;
+                cloudMask += random;
+                float sdfMask = smoothstep(saturate(cloudMask - 0.5), cloudMask,
                                            CloudMask.b * CloudMask.a);
-                //sdfMask = sdfMask()
 
                 
                 //边缘高光
                 float transmissionColor = i.Varying_IrradianceColor.w;
                 float edgeMask = transmissionColor * CloudMask.g;
                 float3 edgeColor = edgeMask * i.Varying_IrradianceColor.rgb*_EdgeIntensity;
+                //edgeColor = saturate(edgeColor);
+                
                 //太阳或月亮的余光
-                float3 shineColor = i.Varying_ShineColorAndRandom*CloudMask.x;
+                float3 shineColor = i.Varying_ShineColorAndRandom*CloudMask.r;
 
                 if (CloudMask.w < 0.5)
                 {
@@ -296,9 +302,9 @@
                 finalColor = lerp(finalColor,1,0.1);
                 finalColor+=i.Varying_IrradianceColor;
                 //finalColor = edgeColor;
-                finalColor = cloudColor;
-                finalColor = finalColor+i.Varying_IrradianceColor;
-                finalColor +=edgeColor+shineColor;
+                //finalColor = shineColor;
+                //finalColor = finalColor+i.Varying_IrradianceColor;
+                //finalColor +=edgeColor+shineColor;
                 //finalColor = i.Varying_IrradianceColor.rgb;
 
                 //测试
